@@ -33,11 +33,9 @@ export class App extends Component {
       try {
         this.setState({ loading: true, error: false });
         if (this.state.term === '') {
-          // Fetch all data when term is empty
           const data = await fetchAllData();
           this.setState({ items: data || [], loading: false });
         } else {
-          // Fetch specific data for non-empty term
           const data = await fetchData(this.state.term);
           if (data?.name) {
             this.setState({ items: [data], loading: false });
@@ -51,7 +49,6 @@ export class App extends Component {
       }
     }
   }
-
   render() {
     return (
       <>
