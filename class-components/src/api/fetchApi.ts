@@ -10,6 +10,12 @@ export const fetchAllData = async (): Promise<TermListType[] | undefined> => {
     }
     const data = await response.json();
     return data.results;
+
+
+
+
+
+    
   } catch (error) {
     console.error('fetchAllData: Error', error);
     throw error;
