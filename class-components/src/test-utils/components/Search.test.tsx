@@ -56,7 +56,36 @@ describe('SearchPanel', () => {
      it('Trims whitespace from search input before saving', () => {   
         render(<SearchPanel sendTerm={mockSendTerm} />);
         const inputElement = screen.getByPlaceholderText(/search pokemon by name/i);
-        
+         fireEvent.change(inputElement, { target: { value: '   bulbasaur   ' } });
+         const searchBtn = screen.getByRole('button', { name: /search button/i });
+         fireEvent.click(searchBtn);
+         expect(localStorage.getItem('searchTerm')).toBe('bulbasaur');
+     })
+    it('Triggers search callback with correct parameters', () => {   
+       render(<SearchPanel sendTerm={mockSendTerm} />);
+        const inputElement = screen.getByPlaceholderText(/search pokemon by name/i);
+        fireEvent.change(inputElement, { target: { value: 'squirtle' } });
+
+        const searchBtn = screen.getByRole('button', { name: /search button/i });
+        fireEvent.click(searchBtn);
+
+        expect(mockSendTerm).toHaveBeenCalledWith('squirtle');
+    })
+
+    it('Retrieves saved search term on component mount', () => {   
+        render(<SearchPanel sendTerm={mockSendTerm} />);
+        const inputElement = screen.getByPlaceholderText(/search pokemon by name/i);
+        expect(inputElement).toHaveValue(localStorage.getItem('searchTerm'));
+    })
+    it('Overwrites existing localStorage value when new search is performed', () => {   
+        render(<SearchPanel sendTerm={mockSendTerm} />);
+        const inputElement = screen.getByPlaceholderText(/search pokemon by name/i);
+        fireEvent.change(inputElement, { target: { value: 'squirtile' } });
+        const searchBtn = screen.getByRole('button', { name: /search button/i });
+        fireEvent.click(searchBtn);
+
+        expect(localStorage.getItem('searchTerm')).toBe('squirtile');
+        expect(mockSendTerm).toHaveBeenCalledWith('squirtile');
     })
 })  
 
