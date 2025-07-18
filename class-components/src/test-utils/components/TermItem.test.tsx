@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { TermItem } from '../../components/ui/TermItem';
 
 describe('TermItem', () => { 
