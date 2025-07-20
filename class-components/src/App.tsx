@@ -60,7 +60,7 @@ export class App extends Component {
           }
         >
           {this.state.loading ? (
-            <div className="spinner"></div>
+            <div className="spinner" data-testid="spinner"></div>
           ) : (
             <Main {...this.state} />
           )}
