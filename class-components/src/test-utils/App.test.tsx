@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { App } from '../App';
 import type { StateProps } from '../types/types';
-import { fetchAllData} from '../api/fetchApi';
+import { fetchAllData } from '../api/fetchApi';
 
 // Mock Header component
 vi.mock('../components/Header', () => ({
@@ -21,7 +21,7 @@ vi.mock('../components/Header', () => ({
   ),
 }));
 vi.mock('../components/Main', () => ({
-  Main: ({ term, items, error }: StateProps) => {
+  Main: ({ items, error }: StateProps) => {
     if (error) {
       return <div data-testid="error">Error</div>;
     }
@@ -35,12 +35,17 @@ vi.mock('../components/Main', () => ({
             </li>
           ))}
         </ul>
-        <button data-testid="error-btn" onClick={() => { throw new Error('Manual error'); }}>
+        <button
+          data-testid="error-btn"
+          onClick={() => {
+            throw new Error('Manual error');
+          }}
+        >
           Throw an error
         </button>
       </main>
     );
-  }
+  },
 }));
 // Mock fetchApi functions
 vi.mock('../api/fetchApi', () => {
@@ -53,9 +58,12 @@ vi.mock('../api/fetchApi', () => {
     url: 'https://pokeapi.co/api/v2/pokemon/pikachu',
   };
   return {
-   fetchAllData: vi.fn().mockImplementation(() =>
-      new Promise(resolve => setTimeout(() => resolve(mockDataList), 100))
-    ),
+    fetchAllData: vi
+      .fn()
+      .mockImplementation(
+        () =>
+          new Promise((resolve) => setTimeout(() => resolve(mockDataList), 100))
+      ),
     fetchData: vi.fn().mockResolvedValue(mockSingleData),
   };
 });

@@ -44,7 +44,8 @@ describe('Main component', () => {
     expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
 
     expect(
-      screen.getByRole('button', { name: /Throw an error/i })).toBeInTheDocument();
+      screen.getByRole('button', { name: /Throw an error/i })
+    ).toBeInTheDocument();
 
     expect(screen.queryByText(/Error!/i)).not.toBeInTheDocument();
   });
@@ -75,7 +76,7 @@ describe('Main component', () => {
     );
     const errorBtn = screen.getByRole('button', { name: /Throw an error/i });
     fireEvent.click(errorBtn);
-  
+
     expect(screen.getByText(/Error!/i)).toBeInTheDocument();
     expect(screen.queryByText(/Item name/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Item description/i)).not.toBeInTheDocument();
