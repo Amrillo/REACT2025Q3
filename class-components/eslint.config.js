@@ -31,6 +31,7 @@ export default tseslint.config(
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
+         { "no-trailing-spaces": "off" }
       ],
       'react-compiler/react-compiler': 'error',
       ...react.configs.recommended.rules,
