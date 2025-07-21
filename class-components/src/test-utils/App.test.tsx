@@ -5,7 +5,6 @@ import { App } from '../App';
 import type { StateProps } from '../types/types';
 import { fetchAllData } from '../api/fetchApi';
 
-// Mock Header component
 vi.mock('../components/Header', () => ({
   Header: ({ sendTerm }: { sendTerm: (term: string) => void }) => (
     <header data-testid="header">
@@ -47,7 +46,7 @@ vi.mock('../components/Main', () => ({
     );
   },
 }));
-// Mock fetchApi functions
+
 vi.mock('../api/fetchApi', () => {
   const mockDataList = [
     { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/pikachu' },
@@ -68,9 +67,8 @@ vi.mock('../api/fetchApi', () => {
   };
 });
 
-// Mock localStorage
+
 beforeEach(() => {
-  //  vi.useFakeTimers();
 });
 
 afterEach(() => {
@@ -78,7 +76,6 @@ afterEach(() => {
 });
 
 describe('App component', () => {
-  // Integration Tests
   it('should make initial API call on component mount', async () => {
     render(<App />);
     expect(fetchAllData).toHaveBeenCalled();
