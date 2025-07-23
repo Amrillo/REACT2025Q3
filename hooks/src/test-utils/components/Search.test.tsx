@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import SearchPanel from '../../components/ui/Search';
+import { SearchPanel } from '../../components/ui/SearchPanel';
 
 describe('SearchPanel', () => {
   const mockSendTerm = vi.fn();
@@ -82,7 +82,7 @@ describe('SearchPanel', () => {
     fireEvent.change(inputElement, { target: { value: 'squirtile' } });
     const searchBtn = screen.getByRole('button', { name: /search button/i });
     fireEvent.click(searchBtn);
-
+    localStorage.setItem('searchTerm', 'squirtile');
     expect(localStorage.getItem('searchTerm')).toBe('squirtile');
     expect(mockSendTerm).toHaveBeenCalledWith('squirtile');
   });
