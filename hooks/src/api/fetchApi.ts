@@ -1,10 +1,10 @@
 import type { TermListType } from '../types/types';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
-
-export const fetchAllData = async (): Promise<TermListType[] | undefined> => {
+const LIMIT_NUM = 10;
+export const fetchAllData = async (page:number): Promise<TermListType[] | undefined> => {
   try {
-    const response = await fetch(`${BASE_URL}`);
+    const response = await fetch(`${BASE_URL}/?limit=${LIMIT_NUM}&offset=${page * 10}`);
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
