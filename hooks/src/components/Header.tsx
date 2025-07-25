@@ -1,13 +1,23 @@
 import { type FC } from 'react';
-import { SearchPanel } from './ui/SearchPanel';
-import type { SearchProps } from '../types/types';
 
-export const Header: FC<SearchProps> = ({ sendTerm }) => {
+export const Header: FC = () => {
+
   return (
     <header className="header">
-      <div className="container">
-        <h1 className="header-title">Find the pokemons you want</h1>
-        <SearchPanel sendTerm={sendTerm} />
+      <div className="container header-container">
+        <div className="logo" role='logo'>
+           <img src="src/assets/logo.png" alt="logo" />
+        </div>
+        <nav className='navbar'>
+          <ul className='navbar-list'>
+            <li className='navbar-item'>
+              <a className='navbar-link' href="/">Home</a> 
+            </li>
+            <li className='navbar-item'>
+              <a className='navbar-link' href="/about">About</a> 
+            </li>
+           </ul>
+        </nav>
       </div>
     </header>
   );
