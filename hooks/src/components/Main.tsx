@@ -9,9 +9,8 @@ export const Main: FC<StateProps> = ({ error, items }) => {
     throw new Error('Failed to fetch data');
   }
   return (
-    <main className="main">
-      <div className="container">
-        <h2 className="list-title">
+    <section className="pokemons">
+        <h2 className="pokemons-title">
           <span className="title">Item name</span>
           <span className="title">Item description</span>
         </h2>
@@ -19,7 +18,6 @@ export const Main: FC<StateProps> = ({ error, items }) => {
         <button className="btn error-btn" onClick={() => setTestError(true)}>
           Throw an error
         </button>
-      </div>
-    </main>
+    </section>
   );
 };
