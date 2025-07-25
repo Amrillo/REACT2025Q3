@@ -16,6 +16,7 @@ export interface StateProps {
   items: TermListType[];
   error: boolean;
   loading: boolean;
+  pageNum: number;
 }
 
 export type SearchProps = {

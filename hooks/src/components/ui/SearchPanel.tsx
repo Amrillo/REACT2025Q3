@@ -45,7 +45,7 @@ export const SearchPanel = ({ sendTerm }: SearchProps) => {
   };
   return (
     <>
-      <div className="header-search">
+      <div className="search-panel">
         <input
           value={searchTerm}
           onChange={handleChangeTerm}
