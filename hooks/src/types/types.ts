@@ -17,6 +17,7 @@ export interface StateProps {
   error: boolean;
   loading: boolean;
   pageNum: number;
+  pagesTotal: number;
 }
 
 export type SearchProps = {

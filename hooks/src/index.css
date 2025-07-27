@@ -54,7 +54,7 @@ input {
   border: 1px solid #1a1a1a;
   padding: 8px 12px;
 }
-img {  
+img {
   max-width: 100%;
   object-fit: cover;
 }
@@ -121,11 +121,11 @@ img {
   width: 100%;
 }
 
-/* -----------------   main ------------*/   
-.main-title {  
+/* -----------------   main ------------*/
+.main-title {
   color: #6194fbe8;
   text-align: center;
-} 
+}
 .search-panel {
   position: relative;
   display: flex;
@@ -133,7 +133,7 @@ img {
   justify-content: center;
   gap: 8px;
   padding: 8px;
- 
+
   margin-bottom: 2px;
 }
 
@@ -174,11 +174,11 @@ img {
   width: 20px;
   height: 20px;
   filter: brightness(0) invert(1); /* делает иконку белой */
-} */
-
-.pokemons-title {
+}
+*/ .pokemons-title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -186,13 +186,50 @@ img {
   font-size: 18px;
   margin-bottom: 20px;
 }
-
+.pokemons-galery {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+}
 .title {
   font-weight: bold;
   flex: 1;
   text-align: left;
 }
+.term-detailed {
+  position: relative;
+  width: 40%;
+  text-align: center;
+  background-color: #f1f1f1;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-top: 1rem;
+  max-width: 400px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+}
 
+.term-detailed:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+.term-detailed-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.term-detailed-description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
 /* Список терминов */
 .terms-list {
   list-style: none;
@@ -202,8 +239,7 @@ img {
 
 .term-item {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 25px;
   background-color: #fff;
   padding: 16px 20px;
@@ -230,6 +266,14 @@ img {
   color: #666;
   flex: 1;
   text-align: left;
+}
+
+.term-detailed-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
 }
 
 .spinner {
@@ -262,16 +306,16 @@ img {
   font-size: 18px;
 }
 
-.about {  
+.about {
   background-color: burlywood;
 }
-.about-title {  
+.about-title {
   font-size: 24px;
   text-align: center;
   margin-bottom: 30px;
 }
 
-.about-text { 
+.about-text {
   text-align: left;
   padding: 20px;
   font-size: 18px;
@@ -279,7 +323,7 @@ img {
   line-height: 1.5;
 }
 
-/* --------  paginaion -----------*/  
+/* --------  paginaion -----------*/
 .pagination {
   display: flex;
   justify-content: center;
@@ -322,7 +366,7 @@ img {
 .pagination-btn:hover:not(:disabled) {
   background-color: #e0f7ff;
 }
-/* -------------  footer -------*/ 
+/* -------------  footer -------*/
 
 .footer {
   background-color: #1e1e1e;
@@ -347,7 +391,7 @@ img {
   color: #61dafb;
   text-decoration: none;
   font-weight: 500;
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 
 .footer-link:hover,

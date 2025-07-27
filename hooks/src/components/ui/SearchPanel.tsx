@@ -1,21 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import searchIcon from '../../assets/search-icon.svg';
 import closeIcon from '../../assets/icon-close.svg';
-import { LocalStorage } from '../../utils/localStorageUtils';
 import type { SearchProps } from '../../types/types';
+import { Button } from './Button';
+import { SaveTermLC } from '../../custom-hooks/saveTermLS';
 
 export const SearchPanel = ({ sendTerm }: SearchProps) => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const restored = SaveTermLC();
+  const [searchTerm, setSearchTerm] = useState<string>(restored);
   const [close, setClose] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-
-  useEffect(() => {
-    const savedTerm = LocalStorage.get();
-    if (savedTerm) {
-      setSearchTerm(savedTerm);
-      setClose(true);
-    }
-  }, []);
 
   const handleChangeTerm = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const inputValue = e.target.value.trim();
@@ -62,9 +56,11 @@ export const SearchPanel = ({ sendTerm }: SearchProps) => {
           <img src={searchIcon} alt="search button" />
         </button>
         {close && (
-          <button type="button" className="btn close-btn" onClick={clearInput}>
-            <img src={closeIcon} alt="close icon" />
-          </button>
+          <Button
+            clearInput={clearInput}
+            closeIcon={closeIcon}
+            classname={'btn close-btn'}
+          />
         )}
       </div>
       {error && (

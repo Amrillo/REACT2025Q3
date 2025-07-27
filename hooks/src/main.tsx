@@ -8,7 +8,7 @@ const rootEl = document.getElementById('root');
 if (rootEl) {
   createRoot(rootEl).render(
     <StrictMode>
-         <RouterProvider router = {router} />
+      <RouterProvider router={router} />
     </StrictMode>
   );
 }
