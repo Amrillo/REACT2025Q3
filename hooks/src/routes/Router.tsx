@@ -1,16 +1,35 @@
-import { createBrowserRouter } from "react-router";
-import { HomePage } from "../pages/HomePage";
-import { AboutPage } from "../pages/AboutPage";
-import { App } from "../App";
+import { createBrowserRouter } from 'react-router';
+import { HomePage } from '../pages/HomePage';
+import { AboutPage } from '../pages/AboutPage';
+import { App } from '../App';
+import { NotFound } from '../pages/NotFound';
+import { DetailedItem } from '../components/Detailed-item';
+import { fetchItem } from '../api/fetchApi';
 
- 
 export const router = createBrowserRouter([
   {
     path: '/',
     Component: App,
     children: [
-      { index: true, element: <HomePage /> },        // renders at / inside <Outlet />
-      { path: 'about', element: <AboutPage /> },     // renders at /about inside <Outlet />
+      {
+        path: '/',
+        element: <HomePage />,
+        children: [
+          {
+            path: ':page/details/:id',
+            element: <DetailedItem />,
+            loader: ({ params }) => fetchItem(Number(params.id)),
+          },
+        ],
+      },
+      {
+        path: 'about',
+        element: <AboutPage />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
     ],
   },
 ]);
