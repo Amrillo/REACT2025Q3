@@ -3,11 +3,10 @@ import searchIcon from '../../assets/search-icon.svg';
 import closeIcon from '../../assets/icon-close.svg';
 import type { SearchProps } from '../../types/types';
 import { Button } from './Button';
-import { SaveTermLC } from '../../custom-hooks/saveTermLS';
+import { useLocalStorageSearch } from '../../custom-hooks/useLocalStorage';
 
 export const SearchPanel = ({ sendTerm }: SearchProps) => {
-  const restored = SaveTermLC();
-  const [searchTerm, setSearchTerm] = useState<string>(restored);
+  const [searchTerm, setSearchTerm] = useLocalStorageSearch();
   const [close, setClose] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
@@ -25,7 +24,6 @@ export const SearchPanel = ({ sendTerm }: SearchProps) => {
   const handleSearchTerm = (): void => {
     if (validate(searchTerm)) {
       sendTerm(searchTerm);
-      setSearchTerm(searchTerm);
     } else {
       setError(true);
     }
@@ -35,7 +33,6 @@ export const SearchPanel = ({ sendTerm }: SearchProps) => {
     setClose(false);
     setError(false);
     sendTerm('');
-    localStorage.removeItem('searchTerm');
   };
   return (
     <>

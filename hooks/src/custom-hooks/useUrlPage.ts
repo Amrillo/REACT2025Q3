@@ -11,7 +11,6 @@ export const useUrlPage = () => {
   } else {
     currentPage = Number(urlArr[1]);
   }
-  console.log(location.pathname.split('/'));
   const setPage = useCallback(
     (page: number) => {
       navigate(`/${page}`);
