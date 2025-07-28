@@ -13,18 +13,21 @@ export const HomePage: FC = () => {
   const [items, setItems] = useState<StateProps['items']>([]);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [pageNum, setPageNum] = useState<number>(currentPage);
+  const [pageNum, setPageNum] = useState<number>(1);
   const [pagesTotal, setPagesTotal] = useState<number>(0);
 
-  const receiveIdTerm = useCallback((newTerm: string) => {
-    setTerm(newTerm);
-    setPageNum(1)
-  }, []);
+  const receiveIdTerm = useCallback(
+    (newTerm: string) => {
+      setTerm(newTerm);
+      setPageNum(currentPage);
+    },
+    [currentPage]
+  );
 
   useEffect(() => {
     const fetchDataOnPageTermChange = async () => {
-       setLoading(true);
-       setError(false);
+      setLoading(true);
+      setError(false);
       try {
         if (term === '') {
           const data = await fetchAllData(pageNum);
@@ -52,12 +55,11 @@ export const HomePage: FC = () => {
 
   useEffect(() => {
     setPageNum(currentPage);
-    setPage(currentPage);
-  }, [currentPage, setPage]);
+  }, [currentPage]);
 
   const handlePageChange = (page: number) => {
     setPageNum(page);
-    setPage(page)
+    setPage(page);
   };
   return (
     <div className="container">
@@ -72,7 +74,7 @@ export const HomePage: FC = () => {
           <div className="spinner" data-testid="spinner"></div>
         ) : (
           <>
-            <Main error={error} items={items}/>
+            <Main error={error} items={items} />
             <Pagination
               setPage={handlePageChange}
               page={pageNum}

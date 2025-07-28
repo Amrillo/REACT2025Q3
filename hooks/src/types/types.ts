@@ -25,7 +25,7 @@ export type SearchProps = {
 };
 
 export type PokemonDetailType = {
-   name: string, 
-   imgSrc: string,
-   weight: number
+  name: string;
+  imgSrc: string;
+  weight: number;
 };

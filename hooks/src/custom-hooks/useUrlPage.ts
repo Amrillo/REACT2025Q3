@@ -1,14 +1,22 @@
 import { useCallback } from 'react';
-import { useSearchParams } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 export const useUrlPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const urlArr = location.pathname.split('/');
+  let currentPage;
+  if (urlArr.length <= 2) {
+    currentPage = Number(urlArr.pop()) || 1;
+  } else {
+    currentPage = Number(urlArr[1]);
+  }
+  console.log(location.pathname.split('/'));
   const setPage = useCallback(
     (page: number) => {
-      setSearchParams({ page: page.toString() });
+      navigate(`/${page}`);
     },
-    [setSearchParams]
+    [navigate]
   );
   return { currentPage, setPage };
 };

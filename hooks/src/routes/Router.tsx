@@ -14,9 +14,13 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <HomePage />,
+      },
+      {
+        path: '/:page',
+        element: <HomePage />,
         children: [
           {
-            path: ':page/details/:id',
+            path: 'details/:id',
             element: <DetailedItem />,
             loader: ({ params }) => fetchItem(Number(params.id)),
           },

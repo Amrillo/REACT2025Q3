@@ -1,25 +1,30 @@
 import { type FC } from 'react';
 import { Button } from './ui/Button';
 import closeIcon from '../assets/icon-close.svg';
-import { useLoaderData, useNavigate } from 'react-router';
+import { useLoaderData, useNavigate, useParams } from 'react-router';
 import type { PokemonDetailType } from '../types/types';
 
 export const DetailedItem: FC = () => {
-  const {name , imgSrc , weight} = useLoaderData() as PokemonDetailType | undefined;
+  const params = useParams();
+  const { name, imgSrc, weight } = useLoaderData() as
+    | PokemonDetailType
+    | undefined;
   const navigate = useNavigate();
   if (!name || !imgSrc || !weight) {
     return <div className="term-detailed">No data found</div>;
   }
   const handleClose = () => {
-    navigate(`/`);
+    navigate(`/${params.page}`);
   };
   return (
     <div className="term-detailed">
       <div className="term-detailed-img">
-          <img src={imgSrc} alt={name} />
+        <img src={imgSrc} alt={name} />
       </div>
       <h2 className="term-detailed-title">{name}</h2>
-      <p className="term-detailed-description">Pokemon has a weight of {weight}</p>
+      <p className="term-detailed-description">
+        Pokemon has a weight of {weight}
+      </p>
       <Button
         closeIcon={closeIcon}
         classname={'term-detailed-close'}

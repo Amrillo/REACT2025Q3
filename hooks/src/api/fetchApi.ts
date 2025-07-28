@@ -55,11 +55,11 @@ export const fetchItem = async (
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
     const pokemonData = await response.json();
-    const obj = {  
-      name: pokemonData.name, 
+    const obj = {
+      name: pokemonData.name,
       imgSrc: pokemonData.sprites.front_shiny,
-      weight: pokemonData.weight
-    }
+      weight: pokemonData.weight,
+    };
     return obj;
   } catch (error) {
     console.error('fetchData: Error fetching', error);
