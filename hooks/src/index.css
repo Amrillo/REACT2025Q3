@@ -58,6 +58,10 @@ img {
   max-width: 100%;
   object-fit: cover;
 }
+
+ul {  
+   list-style: none;
+}
 .container {
   max-width: 1024px;
   margin: 0 auto;
@@ -175,7 +179,7 @@ img {
   height: 20px;
   filter: brightness(0) invert(1); /* делает иконку белой */
 }
-*/ .pokemons-title {
+.pokemons-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -188,7 +192,7 @@ img {
 }
 .pokemons-galery {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 20px;
 }
@@ -199,7 +203,7 @@ img {
 }
 .term-detailed {
   position: relative;
-  width: 40%;
+  width: 100%;
   text-align: center;
   background-color: #f1f1f1;
   border-radius: 16px;
@@ -232,9 +236,10 @@ img {
 }
 /* Список терминов */
 .terms-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
 }
 
 .term-item {

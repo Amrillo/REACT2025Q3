@@ -1,21 +1,12 @@
-import type { TermListType } from '../types/types';
+import type { PokemonDetailType, TermListType } from '../types/types';
 
 const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
-const BASE_URL_ITEM = 'https://pokeapi.co/api/v2/characteristic';
-
 const LIMIT_NUM = 10;
 export interface FetchAllDataResponse {
   results: TermListType[];
   pagesTotal: number;
 }
 
-export type ItemDescriptionType = {
-  description: string;
-  language: {
-    name: string;
-    url: string;
-  };
-};
 export const fetchAllData = async (
   page: number
 ): Promise<FetchAllDataResponse | undefined> => {
@@ -57,16 +48,21 @@ export const fetchData = async (
 
 export const fetchItem = async (
   id: number
-): Promise<ItemDescriptionType[] | undefined> => {
+): Promise<PokemonDetailType | undefined> => {
   try {
-    const response = await fetch(`${BASE_URL_ITEM}/${id}`);
+    const response = await fetch(`${BASE_URL}/${id}`);
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    const data = await response.json();
-    return data.descriptions;
+    const pokemonData = await response.json();
+    const obj = {  
+      name: pokemonData.name, 
+      imgSrc: pokemonData.sprites.front_shiny,
+      weight: pokemonData.weight
+    }
+    return obj;
   } catch (error) {
-    console.error('fetchData: Error fetching', name, error);
+    console.error('fetchData: Error fetching', error);
     throw error;
   }
 };

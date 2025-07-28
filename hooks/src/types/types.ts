@@ -23,3 +23,9 @@ export interface StateProps {
 export type SearchProps = {
   sendTerm: (data: string) => void;
 };
+
+export type PokemonDetailType = {
+   name: string, 
+   imgSrc: string,
+   weight: number
+};

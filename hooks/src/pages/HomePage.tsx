@@ -9,57 +9,55 @@ import { useUrlPage } from '../custom-hooks/useUrlPage';
 
 export const HomePage: FC = () => {
   const { currentPage, setPage } = useUrlPage();
-  const [state, setState] = useState<StateProps>({
-    term: '',
-    items: [],
-    error: false,
-    loading: false,
-    pageNum: currentPage,
-    pagesTotal: 0,
-  });
+  const [term, setTerm] = useState<string>('');
+  const [items, setItems] = useState<StateProps['items']>([]);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [pageNum, setPageNum] = useState<number>(currentPage);
+  const [pagesTotal, setPagesTotal] = useState<number>(0);
 
   const receiveIdTerm = useCallback((newTerm: string) => {
-    setState((prev) => ({ ...prev, term: newTerm, pageNum: 1 }));
+    setTerm(newTerm);
+    setPageNum(1)
   }, []);
 
   useEffect(() => {
     const fetchDataOnPageTermChange = async () => {
-      setState((prev) => ({ ...prev, loading: true, error: false }));
+       setLoading(true);
+       setError(false);
       try {
-        if (state.term === '') {
-          const data = await fetchAllData(state.pageNum);
-          console.log(data);
+        if (term === '') {
+          const data = await fetchAllData(pageNum);
           if (!data) throw new Error('No data received from API');
-          setState((prev) => ({
-            ...prev,
-            items: data.results,
-            loading: false,
-            pagesTotal: data.pagesTotal,
-          }));
+          setItems(data.results);
+          setPagesTotal(data.pagesTotal);
+          setLoading(false);
         } else {
-          const data = await fetchData(state.term);
+          const data = await fetchData(term);
           if (data?.name) {
-            setState((prev) => ({ ...prev, items: [data], loading: false }));
+            setItems([data]);
+            setLoading(false);
           } else {
             throw new Error('Invalid data received');
           }
         }
       } catch (e) {
-        setState((prev) => ({ ...prev, error: true, loading: false }));
+        setError(true);
+        setLoading(false);
         console.error('Error fetching data:', e);
       }
     };
     fetchDataOnPageTermChange();
-  }, [state.term, state.pageNum]);
+  }, [term, pageNum]);
 
   useEffect(() => {
-    setState((prev) => ({ ...prev, pageNum: currentPage }));
+    setPageNum(currentPage);
     setPage(currentPage);
   }, [currentPage, setPage]);
 
   const handlePageChange = (page: number) => {
-    setState((prev) => ({ ...prev, pageNum: page }));
-    setPage(page);
+    setPageNum(page);
+    setPage(page)
   };
   return (
     <div className="container">
@@ -67,18 +65,18 @@ export const HomePage: FC = () => {
       <SearchPanel sendTerm={receiveIdTerm} />
 
       <ErrorBoundary
-        key={`${state.term}-${state.items.length}`}
+        key={`${term}-${items.length}`}
         fallback={<div className="error-message">❌ Failed to fetch data</div>}
       >
-        {state.loading ? (
+        {loading ? (
           <div className="spinner" data-testid="spinner"></div>
         ) : (
           <>
-            <Main {...state} />
+            <Main error={error} items={items}/>
             <Pagination
               setPage={handlePageChange}
-              page={state.pageNum}
-              totalpages={state.pagesTotal}
+              page={pageNum}
+              totalpages={pagesTotal}
             />
           </>
         )}

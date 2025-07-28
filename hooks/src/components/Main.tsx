@@ -1,9 +1,13 @@
 import { useState, type FC } from 'react';
 import { TermList } from './TermList';
-import type { StateProps } from '../types/types';
+import type { TermListType } from '../types/types';
 import { Outlet } from 'react-router';
 
-export const Main: FC<StateProps> = ({ error, items }) => {
+interface MainProps { 
+  error: boolean,
+  items: TermListType[]
+}
+export const Main: FC<MainProps> = ({ error, items }) => {
   const [testError, setTestError] = useState<boolean>(false);
 
   if (error || testError) {
