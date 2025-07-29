@@ -2,7 +2,8 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Main } from '../../components/Main';
 import { ErrorBoundary } from '../../components/Error-boundary';
-import type { StateProps } from '../../types/types';
+import type { StateProps, TermListType } from '../../types/types';
+import { MemoryRouter } from 'react-router';
 
 vi.mock('../../components/TermList', () => ({
   TermList: ({ items }: StateProps) => (
@@ -18,30 +19,36 @@ vi.mock('../../components/TermList', () => ({
 }));
 
 describe('Main component', () => {
-  const mockState = {
-    term: 'pikachu',
+  const mockState: { items: TermListType[]; error: boolean } = {
     items: [
-      { name: 'Pikachu', url: 'Electric Pokémon' },
-      { name: 'Bulbasaur', url: 'Grass Pokémon' },
+      { name: 'Pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
+      { name: 'Bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
     ],
     error: false,
-    loading: false,
   };
-
   it('should correctly receive and render props', () => {
     render(
-      <ErrorBoundary fallback={<div>Error!</div>}>
-        <Main {...mockState} />
-      </ErrorBoundary>
+      <MemoryRouter>
+        <ErrorBoundary fallback={<div>Error!</div>}>
+          <Main {...mockState} />
+        </ErrorBoundary>
+      </MemoryRouter>
     );
 
-    expect(screen.getByText(/Item name/i)).toBeInTheDocument();
-    expect(screen.getByText(/Item description/i)).toBeInTheDocument();
+    const section = screen.getByRole('region', { name: /pokemons/i });
+    expect(section).toHaveClass('pokemons');
+    expect(section.querySelector('.pokemons-galery')).toBeInTheDocument();
 
     const termList = screen.getByTestId('term-list');
     expect(termList).toBeInTheDocument();
-    expect(screen.getByText('Pikachu')).toBeInTheDocument();
-    expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
+    expect(screen.getByText('Pikachu')).toHaveClass('term-item__name');
+    expect(screen.getByText('Bulbasaur')).toHaveClass('term-item__name');
+    expect(
+      screen.getByText('https://pokeapi.co/api/v2/pokemon/25/')
+    ).toHaveClass('term-item__desc');
+    expect(
+      screen.getByText('https://pokeapi.co/api/v2/pokemon/1/')
+    ).toHaveClass('term-item__desc');
 
     expect(
       screen.getByRole('button', { name: /Throw an error/i })

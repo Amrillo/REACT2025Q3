@@ -1,108 +1,70 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { App } from '../App';
-import type { StateProps } from '../types/types';
-import { fetchAllData, fetchData } from '../api/fetchApi';
+import { MemoryRouter } from 'react-router';
 
 vi.mock('../components/Header', () => ({
-  Header: ({ sendTerm }: { sendTerm: (term: string) => void }) => (
-    <header data-testid="header">
-      <div>
-        <h1 data-testid="header-title">Find the pokemons you want</h1>
-        <div data-testid="header-search">
-          <input
-            data-testid="search-input"
-            placeholder="Search Pokemon by name"
-            onChange={(e) => sendTerm(e.target.value)}
-          />
-          <button
-            data-testid="search-button"
-            onClick={() => sendTerm('pikachu')}
-          >
-            Search
-          </button>
-        </div>
-      </div>
-    </header>
-  ),
+  Header: () => <header data-testid="mock-header">Mock Header</header>,
 }));
-vi.mock('../components/Main', () => ({
-  Main: ({ items, error }: StateProps, testError: boolean) => {
-    if (error || testError) {
-      return <div data-testid="error">Error</div>;
-    }
-    return (
-      <main data-testid="main">
-        <div data-testid="container">
-          <h2 data-testid="list-title">
-            <span data-testid="title">Item name</span>
-            <span data-testid="title">Item description</span>
-          </h2>
-          <ul data-testid="term-list">
-            {items.map((item, index) => (
-              <li key={index} data-testid="term-item">
-                <span>{item.name}</span>
-                <span>{item.url}</span>
-              </li>
-            ))}
-          </ul>
-          <button
-            data-testid="error-btn"
-            onClick={() => {
-              throw new Error('Manual error');
-            }}
-          >
-            Throw an error
-          </button>
-        </div>
-      </main>
+vi.mock('../components/Footer', () => ({
+  Footer: () => <footer data-testid="mock-footer">Mock Footer</footer>,
+}));
+
+describe('App Component', () => {
+  it('renders Header component', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
     );
-  },
-}));
-
-vi.mock('../api/fetchApi', () => {
-  const mockDataList = [
-    { name: 'pikachu', url: 'https://pokeapi.co/api/v2/pokemon/pikachu' },
-    { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/bulbasaur' },
-  ];
-  const mockSingleData = {
-    name: 'pikachu',
-    url: 'https://pokeapi.co/api/v2/pokemon/pikachu',
-  };
-  return {
-    fetchAllData: vi
-      .fn()
-      .mockImplementation(
-        () =>
-          new Promise((resolve) => setTimeout(() => resolve(mockDataList), 100))
-      ),
-    fetchData: vi.fn().mockResolvedValue(mockSingleData),
-  };
-});
-
-beforeEach(() => {});
-
-afterEach(() => {
-  vi.resetAllMocks();
-});
-
-describe('App component', () => {
-  it('should make initial API call on component mount', async () => {
-    render(<App />);
-    expect(fetchAllData).toHaveBeenCalled();
-    await vi.waitFor(() => {
-      expect(screen.getByTestId('main')).toBeInTheDocument();
-      expect(screen.getByText('pikachu')).toBeInTheDocument();
-      expect(screen.getByText('bulbasaur')).toBeInTheDocument();
-    });
+    expect(screen.getByTestId('mock-header')).toBeInTheDocument();
   });
 
-  it('should render the list items on clicking search button ', async () => {
-    render(<App />);
-    const btn = screen.getByTestId('search-button');
-    fireEvent.click(btn);
-    expect(fetchData).toHaveBeenCalled();
-    expect(screen.findByTestId('term-item')).toBeDefined();
+  it('renders Footer component', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('mock-footer')).toBeInTheDocument();
+  });
+
+  it('renders Outlet for child routes', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByRole('main')).toBeInTheDocument();
+    // Outlet is rendered, but we can't directly test its content without a child route
+    // Verifying main element is sufficient to confirm Outlet's presence
+  });
+
+  it('applies correct class to main element', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    const main = screen.getByRole('main');
+    expect(main).toHaveClass('main');
+  });
+
+  it('renders correct component structure', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    const header = screen.getByTestId('mock-header');
+    const main = screen.getByRole('main');
+    const footer = screen.getByTestId('mock-footer');
+
+    expect(header).toBeInTheDocument();
+    expect(main).toBeInTheDocument();
+    expect(footer).toBeInTheDocument();
+    expect(header.nextElementSibling).toBe(main);
+    expect(main.nextElementSibling).toBe(footer);
   });
 });

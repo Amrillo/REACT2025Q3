@@ -1,7 +1,11 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { TermList } from '../../components/TermList';
+import { MemoryRouter } from 'react-router';
 
+vi.mock('../../custom-hooks/useUrlPage', () => ({
+  useUrlPage: () => ({ currentPage: 'pokemon' }),
+}));
 describe('TermList rendering', () => {
   it('Renders correct number of items when data is provided', () => {
     const mockItems = [
@@ -14,7 +18,12 @@ describe('TermList rendering', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/bulbasaur',
       },
     ];
-    render(<TermList items={mockItems} />);
+    render(
+      <MemoryRouter >
+        <TermList items={mockItems} />
+      </MemoryRouter>
+    );
+
     const items = screen.getAllByRole('listitem');
     expect(items).toHaveLength(mockItems.length);
   });
@@ -32,7 +41,11 @@ describe('TermList rendering', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/charmander',
       },
     ];
-    render(<TermList items={mockItems} />);
+     render(
+      <MemoryRouter >
+        <TermList items={mockItems} />
+      </MemoryRouter>
+    );
     const items = screen.getAllByRole('listitem');
     expect(items).toHaveLength(1);
     expect(screen.getByText('charmander')).toBeInTheDocument();
@@ -48,7 +61,11 @@ describe('TermList rendering', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/eevee',
       },
     ];
-    render(<TermList items={mockItems} />);
+     render(
+      <MemoryRouter >
+        <TermList items={mockItems} />
+      </MemoryRouter>
+    );
     const nameElem = screen.getByText('eevee');
     const urlElem = screen.getByText('https://pokeapi.co/api/v2/pokemon/eevee');
     expect(nameElem).toBeInTheDocument();

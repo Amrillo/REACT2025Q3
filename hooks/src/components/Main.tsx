@@ -14,7 +14,7 @@ export const Main: FC<MainProps> = ({ error, items }) => {
     throw new Error('Failed to fetch data');
   }
   return (
-    <section className="pokemons">
+    <section aria-label="pokemons" className="pokemons">
       <div className="pokemons-galery">
         <TermList items={items} />
         <Outlet />
