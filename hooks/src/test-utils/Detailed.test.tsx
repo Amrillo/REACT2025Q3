@@ -7,8 +7,20 @@ import { DetailedItem } from '../components/Detailed-item';
 
 // Mock the Button component
 vi.mock('../ui/Button', () => ({
-  Button: ({ closeIcon, classname, onCloseItem }: { closeIcon: string; classname: string; onCloseItem?: () => void }) => (
-    <button className={classname} onClick={onCloseItem} data-testid="close-button">
+  Button: ({
+    closeIcon,
+    classname,
+    onCloseItem,
+  }: {
+    closeIcon: string;
+    classname: string;
+    onCloseItem?: () => void;
+  }) => (
+    <button
+      className={classname}
+      onClick={onCloseItem}
+      data-testid="close-button"
+    >
       <img src={closeIcon} alt="close icon" />
     </button>
   ),
@@ -55,12 +67,17 @@ describe('DetailedItem Component', () => {
     // Verify image
     const image = screen.getByAltText('Pikachu');
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', 'https://pokeapi.co/sprites/pikachu.png');
+    expect(image).toHaveAttribute(
+      'src',
+      'https://pokeapi.co/sprites/pikachu.png'
+    );
     expect(image.parentElement).toHaveClass('term-detailed-img');
 
     // Verify title and description
     expect(screen.getByText('Pikachu')).toHaveClass('term-detailed-title');
-    expect(screen.getByText('Pokemon has a weight of 60')).toHaveClass('term-detailed-description');
+    expect(screen.getByText('Pokemon has a weight of 60')).toHaveClass(
+      'term-detailed-description'
+    );
 
     // Verify close button
     const closeButton = screen.getByRole('button', { name: /close icon/i });
@@ -80,8 +97,12 @@ describe('DetailedItem Component', () => {
     expect(screen.getByText('No data found')).toBeInTheDocument();
     expect(container).toHaveClass('term-detailed');
     expect(screen.queryByAltText('Pikachu')).not.toBeInTheDocument();
-    expect(screen.queryByText('Pokemon has a weight of 60')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /close icon/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Pokemon has a weight of 60')
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /close icon/i })
+    ).not.toBeInTheDocument();
   });
 
   it('renders no data message when loader data is missing fields', () => {
@@ -92,11 +113,13 @@ describe('DetailedItem Component', () => {
         <DetailedItem />
       </MemoryRouter>
     );
-     const container = screen.getByTestId('term-detailed');
+    const container = screen.getByTestId('term-detailed');
     expect(screen.getByText('No data found')).toBeInTheDocument();
     expect(container).toHaveClass('term-detailed');
     expect(screen.queryByAltText('Pikachu')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /close icon/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /close icon/i })
+    ).not.toBeInTheDocument();
   });
 
   it('navigates to correct page when close button is clicked', () => {
@@ -135,6 +158,9 @@ describe('DetailedItem Component', () => {
 
     const closeButton = screen.getByRole('button', { name: /close icon/i });
     expect(closeButton).toHaveClass('term-detailed-close');
-    expect(closeButton.querySelector('img')).toHaveAttribute('src', expect.stringContaining('data:image/svg+xml'));
+    expect(closeButton.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringContaining('data:image/svg+xml')
+    );
   });
 });

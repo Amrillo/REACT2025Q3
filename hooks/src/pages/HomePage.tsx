@@ -68,7 +68,11 @@ export const HomePage: FC = () => {
 
       <ErrorBoundary
         key={`${term}-${items.length}`}
-        fallback={<div className="error-message">❌ Failed to fetch data</div>}
+        fallback={
+          <div className="error-message" data-testid="error-message">
+            ❌ Failed to fetch data
+          </div>
+        }
       >
         {loading ? (
           <div className="spinner" data-testid="spinner"></div>

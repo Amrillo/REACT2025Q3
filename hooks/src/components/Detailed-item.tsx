@@ -6,13 +6,17 @@ import type { PokemonDetailType } from '../types/types';
 
 export const DetailedItem: FC = () => {
   const params = useParams();
-  const data = useLoaderData() as  PokemonDetailType | undefined;
+  const data = useLoaderData() as PokemonDetailType | undefined;
   const navigate = useNavigate();
   if (!data?.name || !data?.imgSrc || !data?.weight) {
-    return <div className="term-detailed"  data-testid="term-detailed">No data found</div>;
+    return (
+      <div className="term-detailed" data-testid="term-detailed">
+        No data found
+      </div>
+    );
   }
   const { name, imgSrc, weight } = data;
-  
+
   const handleClose = () => {
     navigate(`/${params.page}`);
   };

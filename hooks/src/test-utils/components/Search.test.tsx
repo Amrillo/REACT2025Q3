@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { SearchPanel } from '../../components/ui/SearchPanel';
 import * as useLocalStorageSearchHook from '../../custom-hooks/useLocalStorage';
 import { MemoryRouter } from 'react-router';

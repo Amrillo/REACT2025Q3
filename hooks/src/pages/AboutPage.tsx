@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 export const AboutPage: FC = () => {
   return (
-    <section className="about">
+    <section className="about" role="region" aria-label="About section">
       <div className="container">
         <h2 className="about-title">Amrillo Akhmedov</h2>
         <p className="about-text">

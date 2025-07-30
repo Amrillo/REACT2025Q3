@@ -19,7 +19,7 @@ describe('TermList rendering', () => {
       },
     ];
     render(
-      <MemoryRouter >
+      <MemoryRouter>
         <TermList items={mockItems} />
       </MemoryRouter>
     );
@@ -41,8 +41,8 @@ describe('TermList rendering', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/charmander',
       },
     ];
-     render(
-      <MemoryRouter >
+    render(
+      <MemoryRouter>
         <TermList items={mockItems} />
       </MemoryRouter>
     );
@@ -61,8 +61,8 @@ describe('TermList rendering', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/eevee',
       },
     ];
-     render(
-      <MemoryRouter >
+    render(
+      <MemoryRouter>
         <TermList items={mockItems} />
       </MemoryRouter>
     );
