@@ -8,7 +8,7 @@ export const DetailedItem: FC = () => {
   const params = useParams();
   const data = useLoaderData() as PokemonDetailType | undefined;
   const navigate = useNavigate();
-  if (!data?.name || !data?.imgSrc || !data?.weight) {
+  if (!data?.name) {
     return (
       <div className="term-detailed" data-testid="term-detailed">
         No data found

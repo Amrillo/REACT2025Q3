@@ -4,6 +4,7 @@ import closeIcon from '../../assets/icon-close.svg';
 import type { SearchProps } from '../../types/types';
 import { Button } from './Button';
 import { useLocalStorageSearch } from '../../custom-hooks/useLocalStorage';
+import { validate } from '../../utils/validateInput';
 
 export const SearchPanel = ({ sendTerm }: SearchProps) => {
   const [searchTerm, setSearchTerm] = useLocalStorageSearch();
@@ -16,11 +17,6 @@ export const SearchPanel = ({ sendTerm }: SearchProps) => {
     setClose(inputValue !== '');
     setError(false);
   };
-  const validate = (word: string): boolean => {
-    const regEx = /^[a-z]+$/;
-    return regEx.test(word);
-  };
-
   const handleSearchTerm = (): void => {
     if (validate(searchTerm)) {
       sendTerm(searchTerm);

@@ -13,15 +13,15 @@ export const HomePage: FC = () => {
   const [items, setItems] = useState<StateProps['items']>([]);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [pageNum, setPageNum] = useState<number>(1);
+  const [pageNum, setPageNum] = useState<number>(currentPage);
   const [pagesTotal, setPagesTotal] = useState<number>(0);
 
   const receiveIdTerm = useCallback(
     (newTerm: string) => {
       setTerm(newTerm);
-      setPageNum(currentPage);
+      setPageNum(pageNum);
     },
-    [currentPage]
+    [pageNum]
   );
 
   useEffect(() => {
@@ -34,28 +34,27 @@ export const HomePage: FC = () => {
           if (!data) throw new Error('No data received from API');
           setItems(data.results);
           setPagesTotal(data.pagesTotal);
-          setLoading(false);
         } else {
           const data = await fetchData(term);
           if (data?.name) {
             setItems([data]);
-            setLoading(false);
-          } else {
-            throw new Error('Invalid data received');
           }
         }
       } catch (e) {
         setError(true);
         setLoading(false);
         console.error('Error fetching data:', e);
-      }
+      } finally {
+        setLoading(false);
+      } 
     };
     fetchDataOnPageTermChange();
   }, [term, pageNum]);
 
   useEffect(() => {
-    setPageNum(currentPage);
-  }, [currentPage]);
+    setPageNum(pageNum);
+    setPage(pageNum);
+  }, []);
 
   const handlePageChange = (page: number) => {
     setPageNum(page);

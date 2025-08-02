@@ -12,11 +12,12 @@ export const router = createBrowserRouter([
     Component: App,
     children: [
       {
-        path: '/',
+        index: true,
+        // path: '/',
         element: <HomePage />,
       },
       {
-        path: '/:page',
+        path: ':page',// it only matches numbers
         element: <HomePage />,
         children: [
           {
