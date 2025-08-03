@@ -241,10 +241,10 @@ ul {
   justify-content: center;
   gap: 25px;
 }
-
 .term-item {
   display: flex;
-  flex-direction: column;
+  flex-basis: 100%;
+  justify-content: space-between;
   gap: 25px;
   background-color: #fff;
   padding: 16px 20px;
@@ -267,7 +267,8 @@ ul {
   flex: 1;
 }
 
-.term-item__desc {
+.term-item-desc {
+  display: block;
   color: #666;
   flex: 1;
   text-align: left;
@@ -280,6 +281,38 @@ ul {
   width: 24px;
   height: 24px;
 }
+/*  ------- checkbox -----*/
+.checkbox-wrapper {
+}
+.checkbox {
+  visibility: hidden;
+}
+.checkbox + label {
+  position: relative;
+  padding-left: 10px;
+}
+.checkbox-input + label::before {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  border: 2px solid #3498db;
+  content: ' ';
+  width: 20px;
+  height: 20px;
+  transition:
+    all 0.1s ease-in,
+    border-color 0.05s ease-in;
+}
+.checkbox-input:checked + label::before {
+  transform: rotate(40deg);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  top: 2px;
+  left: -15px;
+  width: 10px;
+  height: 17px;
+}
+/* - -------- spiner --------*/
 
 .spinner {
   width: 50px;
