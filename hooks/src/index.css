@@ -256,6 +256,10 @@ ul {
     box-shadow 0.2s ease;
 }
 
+.term-item-link--crossed {  
+  text-decoration: line-through;
+}
+
 .term-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -283,13 +287,22 @@ ul {
 }
 /*  ------- checkbox -----*/
 .checkbox-wrapper {
+  display: flex;
+  align-items: self-start
 }
+.checkbox-text {  
+  margin-right: 10px;
+}
+.checkbox-text.selected {  
+  color: orange;
+  font-weight: 900;
+} 
 .checkbox {
   visibility: hidden;
 }
 .checkbox + label {
   position: relative;
-  padding-left: 10px;
+  padding-left: 35px;
 }
 .checkbox-input + label::before {
   position: absolute;
@@ -308,7 +321,7 @@ ul {
   border-top-color: transparent;
   border-left-color: transparent;
   top: 2px;
-  left: -15px;
+  left: 7px;
   width: 10px;
   height: 17px;
 }
