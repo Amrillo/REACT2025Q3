@@ -2,15 +2,15 @@ import { useCallback, useEffect, useState, type FC } from 'react';
 import { SearchPanel } from '../components/ui/SearchPanel';
 import { ErrorBoundary } from '../components/Error-boundary';
 import { Main } from '../components/Main';
-import type { StateProps } from '../types/types';
 import { fetchAllData, fetchData } from '../api/fetchApi';
 import { Pagination } from '../components/Pagination';
 import { useUrlPage } from '../custom-hooks/useUrlPage';
+import { useItemStore } from '../store/itemStore';
 
 export const HomePage: FC = () => {
   const { currentPage, setPage } = useUrlPage();
   const [term, setTerm] = useState<string>('');
-  const [items, setItems] = useState<StateProps['items']>([]);
+  const {myItems, setItems} = useItemStore();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [pageNum, setPageNum] = useState<number>(1);
@@ -67,7 +67,7 @@ export const HomePage: FC = () => {
       <SearchPanel sendTerm={receiveIdTerm} />
 
       <ErrorBoundary
-        key={`${term}-${items.length}`}
+        key={`${term}-${myItems.length}`}
         fallback={
           <div className="error-message" data-testid="error-message">
             ❌ Failed to fetch data
@@ -78,7 +78,7 @@ export const HomePage: FC = () => {
           <div className="spinner" data-testid="spinner"></div>
         ) : (
           <>
-            <Main error={error} items={items} />
+            <Main error={error} items={myItems} />
             <Pagination
               setPage={handlePageChange}
               page={pageNum}
