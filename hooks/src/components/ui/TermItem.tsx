@@ -1,16 +1,17 @@
-import { useState, type FC } from 'react';
+import { type FC } from 'react';
 import type { TermListType } from '../../types/types';
 import { Link } from 'react-router';
 import { useUrlPage } from '../../custom-hooks/useUrlPage';
 import { Checkbox } from './Checkbox';
+import { useSelectedItems } from '../../store/SelectedItemsStore';
 
 export const TermItem: FC<TermListType> = ({ name, url }) => {
   const { currentPage } = useUrlPage();
-  const [isChecked, setChecked] = useState(false);
-  const id = url.match(/\/(\d+)\/?$/)?.[1];
-
+  const id = url.match(/\/(\d+)\/?$/)?.[1] as string;
+  const { isItemChecked, toggleItem} = useSelectedItems();
+  const isChecked = isItemChecked(id);
   const toggleCheck = () => { 
-    setChecked(prev => !prev);
+    toggleItem(id);
   } 
   return (
     <li className="term-item">

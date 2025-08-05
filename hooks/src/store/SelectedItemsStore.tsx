@@ -2,18 +2,40 @@ import { create } from "zustand";
 
 interface SelectedItem {
   id: string;
-  done: boolean;
+  checked: boolean;
 }
 
 interface SelectedItemsStore {
   selectedItems: SelectedItem[];
-  addItem: (item: SelectedItem) => void;
+  removeItem: (itemId: SelectedItem['id']) => void;
+  toggleItem: (itemId: string) => void;
+  isItemChecked: (itemId: string) => boolean;
 }
 
-export const useSelectedItems = create<SelectedItemsStore>((set) => ({
+export const useSelectedItems = create<SelectedItemsStore>((set,get) => ({
   selectedItems: [],
-  addItem: (item) =>
+  removeItem: (itemId:string) => {  
     set((state) => ({
-      selectedItems: [...state.selectedItems, item],
-    })),
+      selectedItems: state.selectedItems.filter((item)=> item.id !== itemId)
+    }))
+  },
+  toggleItem: (itemId:string) =>
+    set((state) => {
+      const item = state.selectedItems.find((i) => i.id === itemId);
+      if (item) {
+        return {
+          selectedItems: state.selectedItems.map((i) =>
+            i.id === itemId ? { ...i, checked: !i.checked } : i
+          ),
+        };
+      } else {
+        return {
+          selectedItems: [...state.selectedItems, { id: itemId, checked: true }],
+        };
+      }
+    }),
+  isItemChecked: (itemId: string) => {  
+    const item = get().selectedItems.find((item) => item.id === itemId);
+    return item?.checked ?? false;
+  }
 }));
