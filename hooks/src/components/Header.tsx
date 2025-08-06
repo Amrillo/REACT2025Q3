@@ -1,4 +1,5 @@
 import { type FC } from 'react';
+import { ThemeMode } from './ThemeMode';
 
 export const Header: FC = () => {
   return (
@@ -21,6 +22,7 @@ export const Header: FC = () => {
             </li>
           </ul>
         </nav>
+         <ThemeMode/> 
       </div>
     </header>
   );

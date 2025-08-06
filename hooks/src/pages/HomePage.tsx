@@ -10,7 +10,7 @@ import { useItemStore } from '../store/itemStore';
 export const HomePage: FC = () => {
   const { currentPage, setPage } = useUrlPage();
   const [term, setTerm] = useState<string>('');
-  const {myItems, setItems} = useItemStore();
+  const { myItems, setItems } = useItemStore();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [pageNum, setPageNum] = useState<number>(1);
@@ -51,7 +51,7 @@ export const HomePage: FC = () => {
       }
     };
     fetchDataOnPageTermChange();
-  }, [term, pageNum]);
+  }, [term, pageNum, setItems]);
 
   useEffect(() => {
     setPageNum(currentPage);

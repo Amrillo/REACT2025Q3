@@ -10,15 +10,16 @@ export const TermItem: FC<TermListType> = ({ name, url }) => {
   const id = url.match(/\/(\d+)\/?$/)?.[1] as string;
   const isChecked = useSelectedItems((state) => state.isItemChecked(id));
   const toggleItem = useSelectedItems((state) => state.toggleItem);
- 
-  const toggleCheck = () => { 
+
+  const toggleCheck = () => {
     toggleItem({ id, name, url });
-  } 
+  };
   return (
     <li className="term-item">
-      <Link to={`/${currentPage}/details/${id}`}
+      <Link
+        to={`/${currentPage}/details/${id}`}
         onClick={toggleCheck}
-        className={isChecked ? 'term-item-link--crossed': ''}
+        className={isChecked ? 'term-item-link--crossed' : ''}
       >
         {name}
         <span className="term-item-desc" aria-label="url name">

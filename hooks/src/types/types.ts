@@ -30,11 +30,9 @@ export type PokemonDetailType = {
   weight: number;
 };
 
-
 export interface SelectedItemProps {
   id: string;
   name: string;
   url: string;
   checked: boolean;
 }
-

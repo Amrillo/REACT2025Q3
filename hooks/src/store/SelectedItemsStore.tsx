@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { SelectedItemProps } from "../types/types";
+import { create } from 'zustand';
+import type { SelectedItemProps } from '../types/types';
 
 interface SelectedItemsStore {
   selectedItems: SelectedItemProps[];
