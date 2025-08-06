@@ -196,6 +196,12 @@ ul {
   align-items: center;
   gap: 20px;
 }
+
+.pokemons-actions {  
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
 .title {
   font-weight: bold;
   flex: 1;
@@ -350,7 +356,7 @@ ul {
   font-size: 1.2rem;
 }
 .error-btn {
-  width: 100%;
+  width: fit-content;
   background-color: #007bff;
   padding: 10px 12px;
   color: #fff;
@@ -453,5 +459,72 @@ ul {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/*--------------------flyout ------------------*/ 
+
+.flyout-panel {
+  width: 320px;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Header text */
+.flyout-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+/* Button container */
+.flyout-actions {
+  display: flex;
+  gap: 12px;
+}
+ .download-btn, 
+ .unselect-btn {  
+     transition: background 0.2s ease;
+     flex: 1;
+     padding: 10px 14px;
+     font-size: 14px;
+     font-weight: 500;
+     border: none;  
+ }
+/* Specific buttons */
+.unselect-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.unselect-btn:hover {
+  background-color: #dc2626;
+}
+
+.download-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #2563eb;
+}
+
+/* Simple fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

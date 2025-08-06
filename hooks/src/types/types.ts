@@ -29,3 +29,12 @@ export type PokemonDetailType = {
   imgSrc: string;
   weight: number;
 };
+
+
+export interface SelectedItemProps {
+  id: string;
+  name: string;
+  url: string;
+  checked: boolean;
+}
+

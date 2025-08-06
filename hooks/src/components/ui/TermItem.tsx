@@ -8,10 +8,11 @@ import { useSelectedItems } from '../../store/SelectedItemsStore';
 export const TermItem: FC<TermListType> = ({ name, url }) => {
   const { currentPage } = useUrlPage();
   const id = url.match(/\/(\d+)\/?$/)?.[1] as string;
-  const { isItemChecked, toggleItem} = useSelectedItems();
-  const isChecked = isItemChecked(id);
+  const isChecked = useSelectedItems((state) => state.isItemChecked(id));
+  const toggleItem = useSelectedItems((state) => state.toggleItem);
+ 
   const toggleCheck = () => { 
-    toggleItem(id);
+    toggleItem({ id, name, url });
   } 
   return (
     <li className="term-item">

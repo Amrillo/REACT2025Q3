@@ -1,41 +1,42 @@
 import { create } from "zustand";
-
-interface SelectedItem {
-  id: string;
-  checked: boolean;
-}
+import type { SelectedItemProps } from "../types/types";
 
 interface SelectedItemsStore {
-  selectedItems: SelectedItem[];
-  removeItem: (itemId: SelectedItem['id']) => void;
-  toggleItem: (itemId: string) => void;
+  selectedItems: SelectedItemProps[];
+  toggleItem: (item: { id: string; name: string; url: string }) => void;
   isItemChecked: (itemId: string) => boolean;
+  unSelectAll: () => void;
 }
 
-export const useSelectedItems = create<SelectedItemsStore>((set,get) => ({
+export const useSelectedItems = create<SelectedItemsStore>((set, get) => ({
   selectedItems: [],
-  removeItem: (itemId:string) => {  
-    set((state) => ({
-      selectedItems: state.selectedItems.filter((item)=> item.id !== itemId)
-    }))
-  },
-  toggleItem: (itemId:string) =>
+  toggleItem: ({ id, name, url }) =>
     set((state) => {
-      const item = state.selectedItems.find((i) => i.id === itemId);
+      const item = state.selectedItems.find((i) => i.id === id);
       if (item) {
         return {
           selectedItems: state.selectedItems.map((i) =>
-            i.id === itemId ? { ...i, checked: !i.checked } : i
+            i.id === id ? { ...i, checked: !i.checked } : i
           ),
         };
       } else {
         return {
-          selectedItems: [...state.selectedItems, { id: itemId, checked: true }],
+          selectedItems: [
+            ...state.selectedItems,
+            { id, name, url, checked: true },
+          ],
         };
       }
     }),
-  isItemChecked: (itemId: string) => {  
+  isItemChecked: (itemId) => {
     const item = get().selectedItems.find((item) => item.id === itemId);
     return item?.checked ?? false;
-  }
+  },
+  unSelectAll: () => {
+    const current = get().selectedItems;
+    const updated = current.map((item) =>
+      item.checked ? { ...item, checked: false } : item
+    );
+    set({ selectedItems: updated });
+  },
 }));
