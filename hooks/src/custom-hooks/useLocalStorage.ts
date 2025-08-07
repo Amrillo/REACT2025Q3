@@ -5,6 +5,7 @@ export const useLocalStorageSearch = () => {
   const [searchTerm, setSearchTerm] = useState<string>(() => {
     return LocalStorage.get() || '';
   });
+
   useEffect(() => {
     if (searchTerm) {
       LocalStorage.set(searchTerm);

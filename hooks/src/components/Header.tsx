@@ -22,7 +22,7 @@ export const Header: FC = () => {
             </li>
           </ul>
         </nav>
-         <ThemeMode/> 
+        <ThemeMode />
       </div>
     </header>
   );

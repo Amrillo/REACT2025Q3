@@ -6,10 +6,10 @@
   --danger-col: #ef4444;
   --border-col: #d1d5db;
   --switch-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.1) inset;
-  --transition: all 0.3s cubic-bezier(0.76, 0, 0.24, 1);     
+  --transition: all 0.3s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-[data-theme='dark'] {
+.dark {
   --bg-col: #000;
 }
 
@@ -24,6 +24,7 @@
 a {
   font-weight: 500;
   text-decoration: none;
+  color: var(--white-col);
 }
 a:hover {
   color: #535bf2;
@@ -127,6 +128,10 @@ ul {
 .main-title {
   color: var(--accent-col);
   text-align: center;
+}
+
+.dark .main-title {
+  color: var(--white-col);
 }
 .search-panel {
   position: relative;
@@ -335,10 +340,10 @@ ul {
   width: 50px;
   height: 50px;
   border: 6px solid #ccc;
-  border-top-color: #007bff;  
+  border-top-color: #007bff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin: 50px auto;  
+  margin: 50px auto;
 }
 
 .show-error {
@@ -523,7 +528,7 @@ ul {
     transform: translateY(0);
   }
 }
-/*  ------------ Theme mode -----------------*/ 
+/*  ------------ Theme mode -----------------*/
 .theme-switch {
   display: flex;
   justify-content: center;
@@ -546,7 +551,7 @@ ul {
   width: 80px;
   cursor: pointer;
   box-shadow: var(--switch-shadow);
-  transition:  all 0.3s ease;
+  transition: all 0.3s ease;
   background-color: var(--bg-col);
 }
 
@@ -556,7 +561,7 @@ ul {
 }
 
 .theme-switch .ball {
-  transition: all 0.3s ease;;
+  transition: all 0.3s ease;
   background-color: var(--text-col);
   position: absolute;
   border-radius: 50%;
@@ -564,7 +569,7 @@ ul {
   left: 5px;
   height: 30px;
   width: 30px;
- }
+}
 
 .theme-switch .moon {
   color: #f1c40f;
@@ -584,6 +589,7 @@ ul {
 }
 .dark .theme-switch .ball {
   transform: translatex(40px);
+  background-color: var(--white-col);
 }
 
 @media (prefers-color-scheme: dark) {
