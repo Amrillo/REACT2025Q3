@@ -1,7 +1,8 @@
-import { useThemeContext } from '../contexts/useThemeContext';
+import { useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 export const ThemeMode = () => {
-  const { theme, toggleTheme } = useThemeContext();
+  const context = useContext(ThemeContext);
 
   return (
     <div className="theme-switch">
@@ -92,9 +93,9 @@ export const ThemeMode = () => {
             strokeLinejoin="round"
           />
         </svg>
-        <div className="ball" onClick={toggleTheme}></div>
+        <div className="ball" onClick={context?.toggleTheme}></div>
       </label>
-      <span>{theme === 'light' ? 'Light mode' : 'Dark Mode'}</span>
+      <span>{context?.theme === 'light' ? 'Light mode' : 'Dark Mode'}</span>
     </div>
   );
 };

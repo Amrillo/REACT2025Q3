@@ -59,11 +59,13 @@ describe('SearchPanel', () => {
       </MemoryRouter>
     );
 
-    const input = screen.getByPlaceholderText(/search pokemon by name/i) as HTMLInputElement;
+    const input = screen.getByPlaceholderText(
+      /search pokemon by name/i
+    ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'bulbasaur' } });
 
     expect(mockSetSearchTerm).toHaveBeenCalledWith('bulbasaur');
-    const closeButton = screen.queryByRole('button', { name: /close icon/i })
+    const closeButton = screen.queryByRole('button', { name: /close icon/i });
     expect(closeButton).toBeInTheDocument();
   });
   it('calls sendTerm when input is valid lowercase', () => {
@@ -86,7 +88,7 @@ describe('SearchPanel', () => {
     expect(mockSendTerm).toHaveBeenCalledWith('bulbasaur');
     expect(screen.queryByText(/no capital letters/i)).not.toBeInTheDocument();
   });
-     it('does NOT call sendTerm and shows error when input is invalid', () => {
+  it('does NOT call sendTerm and shows error when input is invalid', () => {
     vi.mocked(useLocalStorageSearchHook.useLocalStorageSearch).mockReturnValue([
       'BulbaSaur123',
       mockSetSearchTerm,
@@ -105,7 +107,9 @@ describe('SearchPanel', () => {
     fireEvent.click(searchButton);
     expect(mockSendTerm).not.toHaveBeenCalled();
     expect(
-      screen.getByText(/no capital letters , characters and empty spaces are allowed/i)
+      screen.getByText(
+        /no capital letters , characters and empty spaces are allowed/i
+      )
     ).toBeInTheDocument();
   });
 });

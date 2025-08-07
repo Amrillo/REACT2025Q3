@@ -18,16 +18,24 @@ export const Flyout = ({
   };
   return (
     <div className="flyout-panel">
-      <div className="flyout-header">
+      <p className="flyout-header">
         {countSelected > 1
           ? `${countSelected} items selected`
           : '1 item selected'}
-      </div>
+      </p>
       <div className="flyout-actions">
-        <button className="button unselect-btn" onClick={unSelectAll}>
+        <button
+          type="button"
+          className="button unselect-btn"
+          onClick={unSelectAll}
+        >
           Unselect All
         </button>
-        <button className="button download-btn" onClick={handleDownload}>
+        <button
+          type="button"
+          className="button download-btn"
+          onClick={handleDownload}
+        >
           Download
         </button>
       </div>
