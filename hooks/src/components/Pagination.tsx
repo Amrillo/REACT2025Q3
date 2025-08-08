@@ -1,12 +1,12 @@
 import { type FC } from 'react';
 
 type PaginationPropsType = {
-  setPage: (page: number) => void;
+  setPageChange: (direction: 'prev' | 'next') => void;
   page: number;
   totalpages: number;
 };
 export const Pagination: FC<PaginationPropsType> = ({
-  setPage,
+  setPageChange,
   page,
   totalpages,
 }) => {
@@ -15,14 +15,14 @@ export const Pagination: FC<PaginationPropsType> = ({
       <button
         className="pagination-btn"
         disabled={page === 1}
-        onClick={() => setPage(page - 1)}
+        onClick={() => setPageChange('prev')} 
       >
         Prev
       </button>
       <button className="pagination-page">{page}</button>
       <button
         className="pagination-btn"
-        onClick={() => setPage(page + 1)}
+        onClick={() => setPageChange('next')}
         disabled={page === totalpages}
       >
         Next

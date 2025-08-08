@@ -6,22 +6,26 @@ import { fetchAllData, fetchData } from '../api/fetchApi';
 import { Pagination } from '../components/Pagination';
 import { useUrlPage } from '../custom-hooks/useUrlPage';
 import { useItemStore } from '../store/itemStore';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../store/reduxStore';
+import { decrement, increment } from '../store/features/counterPages';
 
 export const HomePage: FC = () => {
-  const { currentPage, setPage } = useUrlPage();
+  const { setPage } = useUrlPage();
   const [term, setTerm] = useState<string>('');
   const { myItems, setItems } = useItemStore();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [pageNum, setPageNum] = useState<number>(1);
   const [pagesTotal, setPagesTotal] = useState<number>(0);
+
+  const count = useSelector((state: RootState) => state.counter.count);
+  const dispatch = useDispatch();
 
   const receiveIdTerm = useCallback(
     (newTerm: string) => {
       setTerm(newTerm);
-      setPageNum(currentPage);
     },
-    [currentPage]
+    [term]
   );
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export const HomePage: FC = () => {
       setError(false);
       try {
         if (term === '') {
-          const data = await fetchAllData(pageNum);
+          const data = await fetchAllData(count);
           if (!data) throw new Error('No data received from API');
           setItems(data.results);
           setPagesTotal(data.pagesTotal);
@@ -51,15 +55,16 @@ export const HomePage: FC = () => {
       }
     };
     fetchDataOnPageTermChange();
-  }, [term, pageNum, setItems]);
+  }, [term, count, setItems]);
 
-  useEffect(() => {
-    setPageNum(currentPage);
-  }, [currentPage]);
-
-  const handlePageChange = (page: number) => {
-    setPageNum(page);
-    setPage(page);
+  const handlePageChange = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      dispatch(decrement());
+      setPage(count - 1);
+    } else {
+      dispatch(increment());
+      setPage(count + 1);
+    }
   };
   return (
     <div className="container">
@@ -80,9 +85,9 @@ export const HomePage: FC = () => {
           <>
             <Main error={error} items={myItems} />
             <Pagination
-              setPage={handlePageChange}
-              page={pageNum}
+              page={count}
               totalpages={pagesTotal}
+              setPageChange={handlePageChange}
             />
           </>
         )}
