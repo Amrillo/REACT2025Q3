@@ -4,13 +4,10 @@ import type { TermListType } from '../types/types';
 import { Outlet } from 'react-router';
 import { Flyout } from './ui/Flyout';
 import { useSelectedItems } from '../store/SelectedItemsStore';
-
 interface MainProps {
-  error: boolean;
   items: TermListType[];
 }
-
-export const Main: FC<MainProps> = ({ error, items }) => {
+export const Main: FC<MainProps> = ({ items }) => {
   const [testError, setTestError] = useState<boolean>(false);
   const numCheckedItems = useSelectedItems((state) =>
     state.selectedItems.reduce((acc, item) => (item.checked ? acc + 1 : acc), 0)
@@ -18,7 +15,7 @@ export const Main: FC<MainProps> = ({ error, items }) => {
   const removeSelectedItem = useSelectedItems((state) => state.unSelectAll);
   const selectedItems = useSelectedItems((state) => state.selectedItems);
 
-  if (error || testError) {
+  if (testError) {
     throw new Error('Failed to fetch data');
   }
   return (
@@ -27,10 +24,12 @@ export const Main: FC<MainProps> = ({ error, items }) => {
         <TermList items={items} />
         <Outlet />
       </div>
+
       <div className="pokemons-actions">
         <button className="btn error-btn" onClick={() => setTestError(true)}>
           Throw an error
         </button>
+
         {numCheckedItems > 0 && (
           <Flyout
             countSelected={numCheckedItems}

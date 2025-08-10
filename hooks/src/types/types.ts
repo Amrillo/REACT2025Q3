@@ -42,3 +42,7 @@ export interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
 }
+export type FetchAllDataResponse = {
+  results: TermListType[];
+  pagesTotal: number;
+}

@@ -1,14 +1,14 @@
 import { type FC } from 'react';
 import { Button } from './ui/Button';
 import closeIcon from '../assets/icon-close.svg';
-import { useLoaderData, useNavigate, useParams } from 'react-router';
-import type { PokemonDetailType } from '../types/types';
+import { useNavigate, useParams } from 'react-router';
+import { useGetTermByIdQuery } from '../store/features/termsApi';
 
 export const DetailedItem: FC = () => {
   const params = useParams();
-  const data = useLoaderData() as PokemonDetailType | undefined;
+  const { data, isError } = useGetTermByIdQuery(params.id as string);
   const navigate = useNavigate();
-  if (!data?.name || !data?.imgSrc || !data?.weight) {
+  if (isError || !data) {
     return (
       <div className="term-detailed" data-testid="term-detailed">
         No data found

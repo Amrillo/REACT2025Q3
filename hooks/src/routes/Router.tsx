@@ -4,7 +4,6 @@ import { AboutPage } from '../pages/AboutPage';
 import { App } from '../App';
 import { NotFound } from '../pages/NotFound';
 import { DetailedItem } from '../components/Detailed-item';
-import { fetchItem } from '../api/fetchApi';
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +21,8 @@ export const router = createBrowserRouter([
           {
             path: 'details/:id',
             element: <DetailedItem />,
-            loader: ({ params }) => fetchItem(Number(params.id)),
+            // // loader: ({ params }) => fetchItem(Number(params.id)),
+            // loader: ({ params }) => useGetTermByIdQuery(Number(params.id)),
           },
         ],
       },
