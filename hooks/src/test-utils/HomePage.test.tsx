@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-
+import { HomePage } from '../pages/HomePage';
+import type { FetchAllDataResponse, TermListType } from '../types/types';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  useGetAllTermsQuery,
+  useGetTermByNameQuery,
+} from '../store/features/termsApi';
 // Mock components
 vi.mock('../components/ui/SearchPanel', () => ({
   SearchPanel: ({ sendTerm }: { sendTerm: (val: string) => void }) => (
@@ -23,17 +29,26 @@ vi.mock('../components/Main', () => ({
 }));
 
 vi.mock('../components/Pagination', () => ({
-  Pagination: ({ setPage }: { setPage: (page: number) => void }) => (
-    <button onClick={() => setPage(2)} data-testid="pagination-btn">
-      Next
-    </button>
+  Pagination: ({
+    setPageChange,
+  }: {
+    setPageChange: (dir: 'prev' | 'next') => void;
+  }) => (
+    <>
+      <button
+        onClick={() => setPageChange('prev')}
+        data-testid="pagination-prev"
+      >
+        Prev
+      </button>
+      <button
+        onClick={() => setPageChange('next')}
+        data-testid="pagination-next"
+      >
+        Next
+      </button>
+    </>
   ),
-}));
-
-// Mock API + Hook
-vi.mock('../api/fetchApi', () => ({
-  fetchAllData: vi.fn(),
-  fetchData: vi.fn(),
 }));
 
 vi.mock('../custom-hooks/useUrlPage', () => ({
@@ -43,26 +58,58 @@ vi.mock('../custom-hooks/useUrlPage', () => ({
   }),
 }));
 
-import { fetchAllData, fetchData } from '../api/fetchApi';
-import { HomePage } from '../pages/HomePage';
-import type { TermListType } from '../types/types';
+vi.mock('react-redux', () => ({
+  useDispatch: vi.fn(),
+  useSelector: vi.fn(),
+}));
+
+vi.mock('../store/features/termsApi', () => ({
+  useGetAllTermsQuery: vi.fn(),
+  useGetTermByNameQuery: vi.fn(),
+}));
+
 
 describe('<HomePage />', () => {
+  const mockDispatch = vi.fn();
+
   beforeEach(() => {
     vi.clearAllMocks();
+    (useDispatch as vi.Mock).mockReturnValue(mockDispatch);
+    (useSelector as vi.Mock).mockImplementation((selectorFn) =>
+      selectorFn({ counter: { count: 1 } })
+    );
+  });
+   const createAllTermsMock = (overrides?: FetchAllDataResponse) => ({
+    data: undefined,
+    isError: false,
+    isLoading: false,
+    ...overrides,
   });
 
+  const createSingleTermMock = (overrides?: TermListType) => ({
+    data: undefined,
+    isError: false,
+    isLoading: false,
+    ...overrides,
+  });
   it('renders title and search input', () => {
+    (useGetAllTermsQuery as vi.Mock).mockReturnValue(
+      createAllTermsMock({ data: { results: [], pagesTotal: 0 } })
+    );
+    (useGetTermByNameQuery as vi.Mock).mockReturnValue(createSingleTermMock());
     render(<HomePage />);
     expect(screen.getByText(/explore pokemons/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
   });
 
   it('shows loading spinner while fetching data', async () => {
-    (fetchAllData as vi.Mock).mockImplementation(() => new Promise(() => {})); // never resolves
+    (useGetAllTermsQuery as vi.Mock).mockReturnValue(
+      createAllTermsMock({ isLoading: true })
+    );
+    (useGetTermByNameQuery as vi.Mock).mockReturnValue(createSingleTermMock());
 
     render(<HomePage />);
-    expect(await screen.findByTestId('spinner')).toBeInTheDocument();
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
   it('renders Main and Pagination after successful fetchAllData', async () => {

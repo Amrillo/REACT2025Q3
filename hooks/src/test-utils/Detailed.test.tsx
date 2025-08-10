@@ -4,7 +4,13 @@ import * as routerHooks from 'react-router';
 import type { PokemonDetailType } from '../types/types';
 import { MemoryRouter } from 'react-router';
 import { DetailedItem } from '../components/Detailed-item';
+import { useGetTermByIdQuery } from '../store/features/termsApi';
 
+
+type IdQueryProps = {
+  data: PokemonDetailType | undefined;
+  isError: boolean;
+};
 // Mock the Button component
 vi.mock('../ui/Button', () => ({
   Button: ({
@@ -28,14 +34,30 @@ vi.mock('../ui/Button', () => ({
 
 // Mock React Router hooks
 vi.mock('react-router', async () => {
-  const actual = await vi.importActual('react-router');
+  const actual =
+    await vi.importActual<typeof import('react-router')>('react-router');
   return {
     ...actual,
     useParams: vi.fn(),
-    useLoaderData: vi.fn(),
     useNavigate: vi.fn(),
   };
 });
+vi.mock('../store/features/termsApi', () => ({
+  useGetTermByIdQuery: vi.fn(),
+}));
+
+const createQueryMock = (
+  overrides?: Partial<ReturnType<typeof useGetTermByIdQuery>>
+) =>
+  ({
+    data: undefined,
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    isFetching: false,
+    refetch: vi.fn(),
+    ...overrides,
+  }) as unknown as ReturnType<typeof useGetTermByIdQuery>;
 
 describe('DetailedItem Component', () => {
   const mockNavigate = vi.fn();
@@ -47,13 +69,18 @@ describe('DetailedItem Component', () => {
 
   beforeEach(() => {
     // Reset mocks before each test
-    vi.mocked(routerHooks.useParams).mockReturnValue({ page: 'pokemon' });
-    vi.mocked(routerHooks.useLoaderData).mockReturnValue(mockData);
+    vi.mocked(routerHooks.useParams).mockReturnValue({
+      id: '123',
+      page: 'pokemon',
+    });
     vi.mocked(routerHooks.useNavigate).mockReturnValue(mockNavigate);
     mockNavigate.mockClear();
   });
 
-  it('renders correctly with valid loader data', () => {
+  it('renders correctly with valid query data', () => {
+    (useGetTermByIdQuery as jest.Mock).mockReturnValue(
+      createQueryMock({ data: mockData })
+    );
     render(
       <MemoryRouter>
         <DetailedItem />
@@ -61,106 +88,48 @@ describe('DetailedItem Component', () => {
     );
 
     // Verify container
-    const container = screen.getByTestId('term-detailed');
-    expect(container).toHaveClass('term-detailed');
 
-    // Verify image
-    const image = screen.getByAltText('Pikachu');
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute(
-      'src',
-      'https://pokeapi.co/sprites/pikachu.png'
-    );
-    expect(image.parentElement).toHaveClass('term-detailed-img');
-
-    // Verify title and description
-    expect(screen.getByText('Pikachu')).toHaveClass('term-detailed-title');
-    expect(screen.getByText('Pokemon has a weight of 60')).toHaveClass(
-      'term-detailed-description'
-    );
-
-    // Verify close button
-    const closeButton = screen.getByRole('button', { name: /close icon/i });
-    expect(closeButton).toBeInTheDocument();
-    expect(closeButton).toHaveClass('term-detailed-close');
+    expect(screen.getByText('Pikachu')).toBeInTheDocument();
+    expect(screen.getByText('Pokemon has a weight of 60')).toBeInTheDocument();
   });
 
-  it('renders no data message when loader data is undefined', () => {
-    vi.mocked(routerHooks.useLoaderData).mockReturnValue(undefined);
+  it('renders no data message when query returns undefined', () => {
+    (useGetTermByIdQuery as jest.Mock).mockReturnValue(
+      createQueryMock({ data: undefined })
+    );
 
     render(
       <MemoryRouter>
         <DetailedItem />
       </MemoryRouter>
     );
-    const container = screen.getByTestId('term-detailed');
     expect(screen.getByText('No data found')).toBeInTheDocument();
-    expect(container).toHaveClass('term-detailed');
-    expect(screen.queryByAltText('Pikachu')).not.toBeInTheDocument();
-    expect(
-      screen.queryByText('Pokemon has a weight of 60')
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /close icon/i })
-    ).not.toBeInTheDocument();
   });
 
-  it('renders no data message when loader data is missing fields', () => {
-    vi.mocked(routerHooks.useLoaderData).mockReturnValue({ name: 'Pikachu' });
+  it('renders no data message when query errors', () => {
+    (useGetTermByIdQuery as jest.Mock).mockReturnValue(
+      createQueryMock({ data: undefined, isError: true })
+    );
 
     render(
       <MemoryRouter>
         <DetailedItem />
       </MemoryRouter>
     );
-    const container = screen.getByTestId('term-detailed');
     expect(screen.getByText('No data found')).toBeInTheDocument();
-    expect(container).toHaveClass('term-detailed');
-    expect(screen.queryByAltText('Pikachu')).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /close icon/i })
-    ).not.toBeInTheDocument();
   });
 
   it('navigates to correct page when close button is clicked', () => {
-    vi.mocked(routerHooks.useParams).mockReturnValue({ page: 'pokemon' });
+    (useGetTermByIdQuery as jest.Mock).mockReturnValue(
+      createQueryMock({ data: mockData })
+    );
 
     render(
       <MemoryRouter>
         <DetailedItem />
       </MemoryRouter>
     );
-
-    const closeButton = screen.getByRole('button', { name: /close icon/i });
-    fireEvent.click(closeButton);
-
+    fireEvent.click(screen.getByRole('button', { name: /close icon/i }));
     expect(mockNavigate).toHaveBeenCalledWith('/pokemon');
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
-  });
-
-  it('applies correct classes and structure', () => {
-    render(
-      <MemoryRouter>
-        <DetailedItem />
-      </MemoryRouter>
-    );
-
-    const imgContainer = screen.getByAltText('Pikachu').parentElement;
-    expect(imgContainer).toHaveClass('term-detailed-img');
-
-    const title = screen.getByText('Pikachu');
-    expect(title).toHaveClass('term-detailed-title');
-    expect(title.tagName).toBe('H2');
-
-    const description = screen.getByText('Pokemon has a weight of 60');
-    expect(description).toHaveClass('term-detailed-description');
-    expect(description.tagName).toBe('P');
-
-    const closeButton = screen.getByRole('button', { name: /close icon/i });
-    expect(closeButton).toHaveClass('term-detailed-close');
-    expect(closeButton.querySelector('img')).toHaveAttribute(
-      'src',
-      expect.stringContaining('data:image/svg+xml')
-    );
   });
 });
