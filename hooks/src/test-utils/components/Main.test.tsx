@@ -1,9 +1,14 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Main } from '../../components/Main';
-import { ErrorBoundary } from '../../components/Error-boundary';
 import type { StateProps, TermListType } from '../../types/types';
 import { MemoryRouter } from 'react-router';
+import { useGetTermByIdQuery } from '../../store/features/termsApi';
+
+
+vi.mock('../store/features/getApiSlice', () => ({
+  useGetTermByIdQuery: vi.fn(),
+}));
 
 vi.mock('../../components/TermList', () => ({
   TermList: ({ items }: StateProps) => (
@@ -19,19 +24,17 @@ vi.mock('../../components/TermList', () => ({
 }));
 
 describe('Main component', () => {
-  const mockState: { items: TermListType[]; error: boolean } = {
+  const mockState: { items: TermListType[] } = {
     items: [
       { name: 'Pikachu', url: 'https://pokeapi.co/api/v2/pokemon/25/' },
       { name: 'Bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
     ],
-    error: false,
   };
+
   it('should correctly receive and render props', () => {
     render(
       <MemoryRouter>
-        <ErrorBoundary fallback={<div>Error!</div>}>
-          <Main {...mockState} />
-        </ErrorBoundary>
+        <Main {...mockState} />
       </MemoryRouter>
     );
 
@@ -54,39 +57,21 @@ describe('Main component', () => {
       screen.getByRole('button', { name: /Throw an error/i })
     ).toBeInTheDocument();
 
-    expect(screen.queryByText(/Error!/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Failed to fetch data/i)).not.toBeInTheDocument();
   });
 
-  it('should throw error and render ErrorBoundary fallback when error prop is true', () => {
-    const errorState = {
-      ...mockState,
-      error: true,
-    };
-
+  it('should render fallback when button is clicked', () => {
     render(
-      <ErrorBoundary fallback={<div>Error!</div>}>
-        <Main {...errorState} />
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByText(/Error!/i)).toBeInTheDocument();
-
-    expect(screen.queryByText(/Item name/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Item description/i)).not.toBeInTheDocument();
-    expect(screen.queryByTestId('term-list')).not.toBeInTheDocument();
-  });
-  it('should throw error and render ErrorBoundary fallback when button is clicked', () => {
-    render(
-      <ErrorBoundary fallback={<div>Error!</div>}>
+      <MemoryRouter>
         <Main {...mockState} />
-      </ErrorBoundary>
+      </MemoryRouter>
     );
+
     const errorBtn = screen.getByRole('button', { name: /Throw an error/i });
     fireEvent.click(errorBtn);
 
-    expect(screen.getByText(/Error!/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Item name/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Item description/i)).not.toBeInTheDocument();
+    // Now we expect the inline fallback to be rendered
+    expect(screen.getByText(/Failed to fetch data/i)).toBeInTheDocument();
     expect(screen.queryByTestId('term-list')).not.toBeInTheDocument();
   });
 });
