@@ -11,18 +11,21 @@ import {
   useGetTermByNameQuery,
 } from '../store/features/termsApi';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { Loader } from '../components/ui/Loading';
 
 export const HomePage: FC = () => {
   const { setPage } = useUrlPage();
   const [term, setTerm] = useState<string>('');
   const count = useSelector((state: RootState) => state.counter.count);
   const dispatch = useDispatch();
+
   const {
     data: allData,
     isError: isAllError,
     isLoading: isAllLoading,
+    isSuccess: isAllSuccess,
   } = useGetAllTermsQuery(count);
-
+  console.log(isAllSuccess);
   const {
     data: singleData,
     isError: isSingleError,
@@ -41,13 +44,16 @@ export const HomePage: FC = () => {
       setPage(count + 1);
     }
   };
+  // const cache = useSelector(
+  //   (state: RootState) => state[termsApi.reducerPath].queries
+  // );
+  // console.log(cache); // check the cache object in the console
   return (
     <div className="container">
       <h1 className="main-title">Explore pokemons</h1>
       <SearchPanel sendTerm={setTerm} />
-      {isLoading ? (
-        <div className="spinner" data-testid="spinner"></div>
-      ) : isError ? (
+      {isLoading ? (<Loader />)
+        : isError ? (
         <div className="error-message" data-testid="error-message">
           ❌ Network error occurred
         </div>
