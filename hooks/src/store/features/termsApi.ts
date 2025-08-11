@@ -24,6 +24,7 @@ export const termsApi = createApi({
         results: response.results,
         pagesTotal: Math.floor(response.count / LIMIT_NUM),
       }),
+      keepUnusedDataFor: 600,
     }),
     getTermByName: builder.query<TermListType, string>({
       query: (name) => `/${name}`,
@@ -34,6 +35,7 @@ export const termsApi = createApi({
         name: response.name,
         url: response.location_area_encounters,
       }),
+         keepUnusedDataFor: 3600,
     }),
     getTermById: builder.query<PokemonDetailType, string>({
       query: (id) => `/${id}`,
@@ -46,6 +48,7 @@ export const termsApi = createApi({
         imgSrc: response.sprites.front_shiny,
         weight: response.weight,
       }),
+        keepUnusedDataFor: 3600,
     }),
   }),
 });
