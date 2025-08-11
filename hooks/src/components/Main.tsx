@@ -15,21 +15,23 @@ export const Main: FC<MainProps> = ({ items }) => {
   const removeSelectedItem = useSelectedItems((state) => state.unSelectAll);
   const selectedItems = useSelectedItems((state) => state.selectedItems);
 
-  if (testError) {
-    throw new Error('Failed to fetch data');
-  }
+if (testError) {
+  return (
+    <section aria-label="pokemons" className="pokemons">
+      <div className="fallback-error">Failed to fetch data</div>
+    </section>
+  );
+}
   return (
     <section aria-label="pokemons" className="pokemons">
       <div className="pokemons-galery">
         <TermList items={items} />
         <Outlet />
       </div>
-
       <div className="pokemons-actions">
         <button className="btn error-btn" onClick={() => setTestError(true)}>
           Throw an error
         </button>
-
         {numCheckedItems > 0 && (
           <Flyout
             countSelected={numCheckedItems}

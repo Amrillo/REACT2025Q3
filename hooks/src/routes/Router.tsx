@@ -21,8 +21,6 @@ export const router = createBrowserRouter([
           {
             path: 'details/:id',
             element: <DetailedItem />,
-            // // loader: ({ params }) => fetchItem(Number(params.id)),
-            // loader: ({ params }) => useGetTermByIdQuery(Number(params.id)),
           },
         ],
       },
