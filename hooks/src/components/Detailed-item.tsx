@@ -16,7 +16,6 @@ export const DetailedItem: FC = () => {
     );
   }
   const { name, imgSrc, weight } = data;
-
   const handleClose = () => {
     navigate(`/${params.page}`);
   };

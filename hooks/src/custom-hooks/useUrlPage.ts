@@ -17,5 +17,6 @@ export const useUrlPage = () => {
     },
     [navigate]
   );
+  console.log(currentPage);
   return { currentPage, setPage };
 };

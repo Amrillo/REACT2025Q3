@@ -1,39 +1,48 @@
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { SearchPanel } from '../components/ui/SearchPanel';
 import { Main } from '../components/Main';
 import { Pagination } from '../components/Pagination';
 import { useUrlPage } from '../custom-hooks/useUrlPage';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/reduxStore';
-import { decrement, increment } from '../store/features/counterPages';
+import { decrement, increment, setCount } from '../store/features/counterPages';
 import {
   useGetAllTermsQuery,
   useGetTermByNameQuery,
 } from '../store/features/termsApi';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { Loader } from '../components/ui/Loading';
+import { getErrorMessage } from '../utils/handleErrors';
 
 export const HomePage: FC = () => {
-  const { setPage } = useUrlPage();
+  const { currentPage, setPage } = useUrlPage();
   const [term, setTerm] = useState<string>('');
   const count = useSelector((state: RootState) => state.counter.count);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (currentPage !== count) {
+      dispatch(setCount(currentPage));
+    }
+  }, [currentPage, count, dispatch]);
+
   const {
     data: allData,
-    isError: isAllError,
+    error: isAllError,
     isLoading: isAllLoading,
-    isSuccess: isAllSuccess,
   } = useGetAllTermsQuery(count);
-  console.log(isAllSuccess);
+
   const {
     data: singleData,
-    isError: isSingleError,
+    error: isSingleError,
     isLoading: isSingleLoading,
   } = useGetTermByNameQuery(term || skipToken);
+
   const isError = isAllError || isSingleError;
   const isLoading = isAllLoading || isSingleLoading;
   const data = term ? (singleData ? [singleData] : []) : allData?.results || [];
+  const errorMessage =
+    getErrorMessage(isAllError) || getErrorMessage(isSingleError);
 
   const handlePageChange = (direction: 'prev' | 'next') => {
     if (direction === 'prev') {
@@ -44,22 +53,19 @@ export const HomePage: FC = () => {
       setPage(count + 1);
     }
   };
-  // const cache = useSelector(
-  //   (state: RootState) => state[termsApi.reducerPath].queries
-  // );
-  // console.log(cache); // check the cache object in the console
   return (
     <div className="container">
       <h1 className="main-title">Explore pokemons</h1>
       <SearchPanel sendTerm={setTerm} />
-      {isLoading ? (<Loader />)
-        : isError ? (
+      {isLoading ? (
+        <Loader />
+      ) : isError ? (
         <div className="error-message" data-testid="error-message">
-          ❌ Network error occurred
+          {errorMessage}
         </div>
       ) : (
         <>
-          <Main items={data} />
+          <Main items={data} page={count} />
           <Pagination
             page={count}
             totalpages={allData?.pagesTotal || 0}

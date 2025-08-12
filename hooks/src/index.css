@@ -126,7 +126,7 @@ ul {
 
 /* -----------------   main ------------*/
 
-.main {  
+.main {
   padding: 30px 0;
 }
 .main-title {
@@ -268,8 +268,8 @@ ul {
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
-.term-item a {  
-   color: var(--text-col);
+.term-item a {
+  color: var(--text-col);
 }
 .term-item-link--crossed {
   text-decoration: line-through;
@@ -371,6 +371,12 @@ ul {
 .error-btn {
   width: fit-content;
   background-color: var(--accent-col);
+  padding: 10px 12px;
+  color: var(--white-col);
+  font-size: 18px;
+}
+.refresh-btn {
+  background-color: var(--danger-col);
   padding: 10px 12px;
   color: var(--white-col);
   font-size: 18px;
@@ -543,6 +549,7 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 15px;
 }
 
 .theme-switch .checkbox-theme {

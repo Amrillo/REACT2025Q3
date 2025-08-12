@@ -1,12 +1,16 @@
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { router as appRouter } from '../routes/Router';
 import { render, screen, waitFor } from '@testing-library/react';
-import { useGetAllTermsQuery, useGetTermByIdQuery, useGetTermByNameQuery } from '../store/features/termsApi';
+import {
+  useGetAllTermsQuery,
+  useGetTermByIdQuery,
+  useGetTermByNameQuery,
+} from '../store/features/termsApi';
 import { Provider } from 'react-redux';
 import { store } from '../store/reduxStore';
 
 vi.mock('../store/features/termsApi', () => ({
-   termsApi: {
+  termsApi: {
     reducerPath: 'terms',
     reducer: () => ({}),
     middleware: () => (next) => (action) => next(action),
@@ -14,14 +18,14 @@ vi.mock('../store/features/termsApi', () => ({
   useGetAllTermsQuery: vi.fn(),
   useGetTermByNameQuery: vi.fn(),
   useGetTermByIdQuery: vi.fn(),
- }))
+}));
 
- const createAllTermsMock = (overrides = {}) => ({
+const createAllTermsMock = (overrides = {}) => ({
   data: { results: [], pagesTotal: 0 },
   isError: false,
   isLoading: false,
   ...overrides,
- });
+});
 
 const createSingleTermMock = (overrides = {}) => ({
   data: undefined,
@@ -45,7 +49,7 @@ beforeEach(() => {
 
 describe('App Router', () => {
   it('renders HomePage at "/"', async () => {
-  const memoryRouter = createMemoryRouter(appRouter.routes, {
+    const memoryRouter = createMemoryRouter(appRouter.routes, {
       initialEntries: ['/'],
     });
     render(
@@ -53,7 +57,7 @@ describe('App Router', () => {
         <RouterProvider router={memoryRouter} />
       </Provider>
     );
-    expect(await screen.findByText(/explore pokemons/i)).toBeInTheDocument()
+    expect(await screen.findByText(/explore pokemons/i)).toBeInTheDocument();
   });
 
   it('renders Aboutpage at "/about"', async () => {
@@ -71,7 +75,7 @@ describe('App Router', () => {
     const memoryRouter = createMemoryRouter(appRouter.routes, {
       initialEntries: ['/*'],
     });
-   render(
+    render(
       <Provider store={store}>
         <RouterProvider router={memoryRouter} />
       </Provider>

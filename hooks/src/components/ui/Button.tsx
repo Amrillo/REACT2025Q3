@@ -1,8 +1,11 @@
 type ButtonProps = {
   clearInput?: () => void;
-  closeIcon: string;
+  closeIcon?: string;
   classname?: string;
   onCloseItem?: () => void;
+  throwError?: () => void;
+  refresh?: () => void;
+  children?: React.ReactNode;
 };
 
 export const Button = ({
@@ -10,17 +13,18 @@ export const Button = ({
   closeIcon,
   classname,
   onCloseItem,
+  throwError,
+  refresh,
+  children,
 }: ButtonProps) => {
   const handleClick = () => {
-    if (onCloseItem) {
-      onCloseItem();
-    } else if (clearInput) {
-      clearInput();
-    }
+    const action = onCloseItem ?? clearInput ?? throwError ?? refresh;
+    action?.();
   };
   return (
     <button type="button" className={classname} onClick={handleClick}>
-      <img src={closeIcon} alt="close icon" />
+      {closeIcon && <img src={closeIcon} alt="close icon" />}
+      {children}
     </button>
   );
 };

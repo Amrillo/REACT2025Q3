@@ -68,19 +68,22 @@ vi.mock('../store/features/termsApi', () => ({
   useGetTermByNameQuery: vi.fn(),
 }));
 
-
 describe('<HomePage />', () => {
   let mockDispatch: ReturnType<typeof vi.fn>;
   let mockSetPage: ReturnType<typeof vi.fn>;
   let mockState: { counter: { count: number } };
 
-  const createAllTermsMock = (overrides?: Partial<ReturnType<typeof useGetAllTermsQuery>>) => ({
+  const createAllTermsMock = (
+    overrides?: Partial<ReturnType<typeof useGetAllTermsQuery>>
+  ) => ({
     data: undefined,
     isError: false,
     isLoading: false,
     ...overrides,
   });
-  const createSingleTermMock = (overrides?: Partial<ReturnType<typeof useGetTermByNameQuery>>) => ({
+  const createSingleTermMock = (
+    overrides?: Partial<ReturnType<typeof useGetTermByNameQuery>>
+  ) => ({
     data: undefined,
     isError: false,
     isLoading: false,
@@ -109,12 +112,14 @@ describe('<HomePage />', () => {
     });
     (useDispatch as unknown as typeof vi.fn).mockReturnValue(mockDispatch);
   });
-   
+
   it('renders title and search input', () => {
-   (useGetAllTermsQuery as unknown as typeof vi.fn).mockReturnValue(
+    (useGetAllTermsQuery as unknown as typeof vi.fn).mockReturnValue(
       createAllTermsMock({ data: { results: [], pagesTotal: 0 } })
     );
-    (useGetTermByNameQuery as unknown as typeof vi.fn).mockReturnValue(createSingleTermMock());
+    (useGetTermByNameQuery as unknown as typeof vi.fn).mockReturnValue(
+      createSingleTermMock()
+    );
     render(<HomePage />);
     expect(screen.getByText(/explore pokemons/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
@@ -124,7 +129,9 @@ describe('<HomePage />', () => {
     (useGetAllTermsQuery as unknown as typeof vi.fn).mockReturnValue(
       createAllTermsMock({ isLoading: true })
     );
-    (useGetTermByNameQuery as unknown as typeof vi.fn).mockReturnValue(createSingleTermMock());
+    (useGetTermByNameQuery as unknown as typeof vi.fn).mockReturnValue(
+      createSingleTermMock()
+    );
 
     render(<HomePage />);
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
@@ -136,7 +143,9 @@ describe('<HomePage />', () => {
         data: { results: [{ name: 'pikachu', url: '' }], pagesTotal: 5 },
       })
     );
-    (useGetTermByNameQuery as unknown as typeof vi.fn).mockReturnValue(createSingleTermMock());
+    (useGetTermByNameQuery as unknown as typeof vi.fn).mockReturnValue(
+      createSingleTermMock()
+    );
 
     render(<HomePage />);
     expect(await screen.findByTestId('main-list')).toBeInTheDocument();
@@ -145,18 +154,20 @@ describe('<HomePage />', () => {
   });
 
   it('fetches specific item with fetchData when searching', async () => {
-   (useGetAllTermsQuery as unknown as typeof vi.fn).mockReturnValue(
+    (useGetAllTermsQuery as unknown as typeof vi.fn).mockReturnValue(
       createAllTermsMock({ data: { results: [], pagesTotal: 0 } })
     );
-    (useGetTermByNameQuery as unknown as typeof vi.fn).mockImplementation((queryArg) => {
-      if (queryArg === skipToken) {
-        return createSingleTermMock();
-      } else {
-        return createSingleTermMock({
-          data: { name: queryArg as string, url: 'some-url' },
-        });
+    (useGetTermByNameQuery as unknown as typeof vi.fn).mockImplementation(
+      (queryArg) => {
+        if (queryArg === skipToken) {
+          return createSingleTermMock();
+        } else {
+          return createSingleTermMock({
+            data: { name: queryArg as string, url: 'some-url' },
+          });
+        }
       }
-    });
+    );
 
     render(<HomePage />);
     fireEvent.change(screen.getByTestId('search-input'), {
@@ -168,13 +179,15 @@ describe('<HomePage />', () => {
     });
   });
 
-it('handles pagination button click', async () => {
+  it('handles pagination button click', async () => {
     (useGetAllTermsQuery as unknown as vi.Mock).mockReturnValue(
       createAllTermsMock({
         data: { results: [{ name: 'charmander', url: '' }], pagesTotal: 5 },
       })
     );
-    (useGetTermByNameQuery as unknown as vi.Mock).mockReturnValue(createSingleTermMock());
+    (useGetTermByNameQuery as unknown as vi.Mock).mockReturnValue(
+      createSingleTermMock()
+    );
 
     const { rerender } = render(<HomePage />);
     const btn = screen.getByTestId('pagination-next');

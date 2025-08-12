@@ -45,4 +45,4 @@ export interface ThemeContextType {
 export type FetchAllDataResponse = {
   results: TermListType[];
   pagesTotal: number;
-}
+};

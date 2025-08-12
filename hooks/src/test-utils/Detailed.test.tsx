@@ -6,11 +6,6 @@ import { MemoryRouter } from 'react-router';
 import { DetailedItem } from '../components/Detailed-item';
 import { useGetTermByIdQuery } from '../store/features/termsApi';
 
-
-type IdQueryProps = {
-  data: PokemonDetailType | undefined;
-  isError: boolean;
-};
 // Mock the Button component
 vi.mock('../ui/Button', () => ({
   Button: ({

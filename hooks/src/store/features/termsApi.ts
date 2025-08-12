@@ -14,9 +14,12 @@ export const termsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
+  refetchOnReconnect: true,
+  tagTypes: ['Items'],
   endpoints: (builder) => ({
     getAllTerms: builder.query<FetchAllDataResponse, number>({
       query: (page) => `/?limit=${LIMIT_NUM}&offset=${page * 10}`,
+      providesTags: ['Items'],
       transformResponse: (response: {
         results: TermListType[];
         count: number;
@@ -35,7 +38,7 @@ export const termsApi = createApi({
         name: response.name,
         url: response.location_area_encounters,
       }),
-         keepUnusedDataFor: 3600,
+      keepUnusedDataFor: 3600,
     }),
     getTermById: builder.query<PokemonDetailType, string>({
       query: (id) => `/${id}`,
@@ -48,7 +51,7 @@ export const termsApi = createApi({
         imgSrc: response.sprites.front_shiny,
         weight: response.weight,
       }),
-        keepUnusedDataFor: 3600,
+      keepUnusedDataFor: 3600,
     }),
   }),
 });

@@ -11,7 +11,9 @@ vi.mock('../index.css', () => ({}));
 
 describe('index.tsx', () => {
   beforeEach(() => {
-    vi.spyOn(document, 'getElementById').mockReturnValue(document.createElement('div'));
+    vi.spyOn(document, 'getElementById').mockReturnValue(
+      document.createElement('div')
+    );
   });
 
   afterEach(() => {

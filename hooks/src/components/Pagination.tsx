@@ -15,7 +15,7 @@ export const Pagination: FC<PaginationPropsType> = ({
       <button
         className="pagination-btn"
         disabled={page === 1}
-        onClick={() => setPageChange('prev')} 
+        onClick={() => setPageChange('prev')}
       >
         Prev
       </button>

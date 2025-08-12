@@ -12,10 +12,10 @@ if (rootEl) {
   createRoot(rootEl).render(
     <StrictMode>
       <Provider store={store}>
-          <ThemeProvider>
-            <RouterProvider router={router} />
-          </ThemeProvider>
-      </Provider> 
+        <ThemeProvider>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </Provider>
     </StrictMode>
   );
 }

@@ -3,8 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Main } from '../../components/Main';
 import type { StateProps, TermListType } from '../../types/types';
 import { MemoryRouter } from 'react-router';
-import { useGetTermByIdQuery } from '../../store/features/termsApi';
-
 
 vi.mock('../store/features/getApiSlice', () => ({
   useGetTermByIdQuery: vi.fn(),
