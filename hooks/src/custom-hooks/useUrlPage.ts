@@ -1,22 +1,11 @@
-import { useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 export const useUrlPage = () => {
-  const location = useLocation();
+  const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
-  const urlArr = location.pathname.split('/');
-  let currentPage;
-  if (urlArr.length <= 2) {
-    currentPage = Number(urlArr.pop()) || 1;
-  } else {
-    currentPage = Number(urlArr[1]);
-  }
-  const setPage = useCallback(
-    (page: number) => {
-      navigate(`/${page}`);
-    },
-    [navigate]
-  );
-  console.log(currentPage);
+  const currentPage = Number(page) || 1;
+  const setPage = (newPage: number) => {
+    navigate(`/${newPage}`);
+  };
   return { currentPage, setPage };
 };

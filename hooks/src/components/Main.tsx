@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { useMemo, useState, type FC } from 'react';
 import { TermList } from './TermList';
 import type { TermListType } from '../types/types';
 import { Outlet } from 'react-router';
@@ -12,11 +12,14 @@ interface MainProps {
 }
 export const Main: FC<MainProps> = ({ items, page }) => {
   const [testError, setTestError] = useState<boolean>(false);
-  const numCheckedItems = useSelectedItems((state) =>
-    state.selectedItems.reduce((acc, item) => (item.checked ? acc + 1 : acc), 0)
+  const selectedItems = useSelectedItems((state) => state.selectedItems);
+
+  const numCheckedItems = useMemo(
+    () =>
+      selectedItems.reduce((acc, item) => (item.checked ? acc + 1 : acc), 0),
+    [selectedItems]
   );
   const removeSelectedItem = useSelectedItems((state) => state.unSelectAll);
-  const selectedItems = useSelectedItems((state) => state.selectedItems);
   const { refetch } = useGetAllTermsQuery(page);
 
   if (testError) {

@@ -2,6 +2,9 @@ export type TermListType = {
   name: string;
   url: string;
 };
+export interface TermItemProps extends TermListType {
+  currentPage: number | string;
+}
 export interface MainState {
   baseUrl: string;
   items: TermListType[];
