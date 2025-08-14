@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { App } from '../App';
+import { App } from '../../App';
 import { MemoryRouter } from 'react-router';
 
 vi.mock('../components/Header', () => ({

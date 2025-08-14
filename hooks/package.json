@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "preview": "vite preview",
     "format:fix": "prettier --write .",
     "prepare": "husky",
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "next": "^15.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",

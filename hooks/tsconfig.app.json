@@ -3,19 +3,22 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
+    "plugins": [{ "name": "next" }],
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"],
-
+    "esModuleInterop": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-
+    "noEmit": false,
+    "jsx": "preserve",
+    "composite": true,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -24,5 +27,12 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src", 
+   "./dist/types/**/*.ts", 
+   "./next-env.d.ts"
+, "App.tsx"  ],
+  "exclude": [
+    "./node_modules"
+  ]
 }
