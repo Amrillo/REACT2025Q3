@@ -1,3 +1,4 @@
+
 import { ClientOnly } from './.client';
  
 export function generateStaticParams() {
